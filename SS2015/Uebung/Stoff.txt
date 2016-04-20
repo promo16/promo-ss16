@@ -1,0 +1,50 @@
+Hier sind die Themen, von denen ich glaube, dass sie klausurrelevant sind (1 - wichtig...5 - eher unwichtig):
+
+(1) - Abstiegsfunktionen
+
+(1) - Typherleitung (Baum / linerare Notation)
+
+(1) - Typherleitung von Ausdrücken z.B Typ von 'Just (:)' :: Maybe a -> [a] -> [a]
+
+(1) - Auswerten von Ausdrücken z.B Was ist foldl (\xs x -> x^2 + xs) 1 [1..3] => 15
+
+(1) - Unifikation
+
+(1) - Semantik (Übung 11 + 12)
+
+(1) - Verstehen, wie Pattern-Matching funktioniert:
+
+        z.B (_:x:xs), g@(y:_), (a:4:2:d), (Just x), (Just (x:xs)), (Right ((_:y:_)))
+
+(1) - Verstehen, wie Lambda Ausdrücke funktionieren:
+
+        z.B (\x y -> x + y) ^= (+)
+            (\_ x -> x + 1) undefined 4 => 5
+
+(2) - Induktion
+
+(2) - Typregelherleitung
+
+(2) - Verständnis für 'forM', 'mapM', '>>=', '>>', 'return'
+
+(2) - Definition von endrekursiven Funktionen + Akkumulator kennen
+
+(2) - Call-by-Value und Call-by-Name sollte verstanden sein (mit eigener Auswertung)
+
+(2-3) - Funktionen kennen und (für 1.0 Studenten, endrekursiv) implementieren können
+
+         z.B (:), (++), concat, map, mapM, forM, foldl, foldr, reverse, length, insert
+
+(3) - List comprehentions
+
+(3) - Funktor und jeweilige Definition kennen (fmap von Maybe / Either) - evtl. selber implementieren für einfache Typen
+
+(3) - Verständis von rekursiv definierte Datentypen und Polymorphie
+
+        z.B data Doh a = Null | Hod a (Doh a)
+
+(4) - Tiefendurchlauf / Breitendurchlauf durch einen Baum
+
+
+Falls wer zu viel Zeit u.o. Lust hat, kann sich bei codewars.com ein Account erstellen und alle 6-7 Kyu Aufgaben lösen.
+Die meisten davon sind ungefähr in dem Wissensbereich den wir erreicht haben (sollten)!

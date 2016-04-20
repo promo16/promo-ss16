@@ -1,0 +1,1 @@
+Die Lösungen die H* und A* im Namen beinhalten, sind von mir privat erstellt worden und ich gebe keine Garantie für die vollkommene Korrektheit von deren Inhalt.
