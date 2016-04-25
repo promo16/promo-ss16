@@ -45,6 +45,9 @@ d n = [' ' | x <- [1..n]]
 
 d' n = [' ' | _ <- [1..n]]
 
+d'' :: Integral a => a -> [String]
+d'' n = [" " | x <- [1..n]]
+
 -- Erklärung:
 --
 --     (gelesen) Füge das Element ' ' zur Liste hinzu pro Element in der Liste [1..n]
@@ -54,6 +57,7 @@ d' n = [' ' | _ <- [1..n]]
 --e) natürlichen Zahlen zwischen 7 und 77 mit Rest 5 bei der Division durch 7 -- 
 e :: Integral a => [a]
 e = [x | x <- [7..77], x `mod` 7 == 5]
+
 
 --f) dreifach -- 
 f :: Integer -> Integer
@@ -75,6 +79,7 @@ f''' x = last [y * 3 | y <- [1..x]]
 --g) nur Großbuchstaben ausgeben eines Strings -- 
 g :: [Char] -> [Char]
 g s = [x | x <- s, x `elem` ['A'..'Z']]
+
 
 -- Erklärung:
 --   Hier können wir ausnutzen dass wie eine Liste mit allen Großbuchstaben erstellen können:
