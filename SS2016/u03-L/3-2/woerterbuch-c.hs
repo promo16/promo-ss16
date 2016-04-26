@@ -2,7 +2,7 @@
 -- hochdeutsches Wort aus der Standardeingabe einlesen und bayrische Uebersetzung erfragen und in Datei aus Programm-Argument speichern --
 
 import System.IO
-import System.Environment   
+import System.Environment
 
 
 -- Ausführung in der Kommandozeile:

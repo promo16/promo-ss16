@@ -20,8 +20,7 @@ import System.Environment
 --
 main :: IO ()
 main = do
-    args     <- getArgs
-    handle   <- openFile (args !! 0) ReadMode
+    handle   <- openFile "woerterbuch.txt" ReadMode
     contents <- hGetContents handle
     let dict = lines contents
 
