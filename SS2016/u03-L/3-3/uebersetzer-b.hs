@@ -6,7 +6,6 @@
 -- $ runghc uebersetzer-b.hs
 -- ODER
 -- $ stack runghc -- uebersetzer-b.hs
--- IM GHCi wird es Fehler schmeißen, da dort 'getArgs' nicht funktioniert
 -- ODER man kompiliert sich die Datei und führt sie aus:
 -- $ ghc uebersetzer-b.hs -o uber
 -- $ ./uber

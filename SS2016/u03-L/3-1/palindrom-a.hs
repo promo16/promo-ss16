@@ -23,6 +23,7 @@ import System.IO
 
 -- | Ohne unnötige Handles
 --
+
 main :: IO ()
 main = do
     input <- readFile "palindrom.txt"

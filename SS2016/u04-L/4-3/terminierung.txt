@@ -1,0 +1,147 @@
+-- 4-3 Terminierungsbeweis für Fibonacci-Zahlen --
+
+gegeben:
+
+fib :: Int -> Int
+fib 0 = 1
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+
+Eingabewerte sind beschränkt auf die natürlichen Zahlen + {0}.
+
+
+Nun müssen wir durch eine geeignete Abstiegsfunktion beweisen dass diese Funktion definiert.
+
+Zum Glück gibt es da ein Schema :)  tl;dr: Z.144
+
+Zuerst aber ein kurzer Einstieg in den Beweis durch eine Abstiegsfunktion:
+
+Die naive Idee ist dass wenn man beweisen kann, dass für jeden rekursiven Aufruf der Funktion
+die Eingabe kleiner wird. Wenn diese Funktion einen Fall hat, der besagt dass sie bei irgendeiner
+Eingabe die klein genug ist sich beendet, dann wird das irgendwann auch sicherlich passieren.
+
+Diese Idee kann man aber wunderschön in drei verschiedene Fälle aufteilen:
+
+AUF) Führen die rekursiven Aufrufe aus der Menge raus?
+DEF) Werden alle möglichen Argumente für unsere Menge abgefangen?
+ABST) Hier müssen wir uns eine Abstiegsfunktion wählen die für JEDEN rekursiven Aufruf kleiner wird.
+      Was das bedeutet werden wir gleich kennenlernen.
+
+Fangen wir mit an:
+
+AUF): Um herauszufinden ob die rekursiven Aufrufe aus der Menge herausführen, müssen wir erstmal alle
+      rekursiven Aufrufe identifizieren. In diesem Beispiel haben wir genau zwei:
+
+                  1)          2)
+               ___|___     ___|___
+              |       |   |       |
+      fib n = fib (n-1) + fib (n-2)
+
+      Beachte, es wird nicht immer nur ein Pattern angeschaut! Im folgenden Beispiel gibt es 4 rekursive Aufrufe:
+      
+      gee x
+        | x < 10 = gee (x - 10)                   -- 1)
+        | x < 20 = gee (x - 5)                    -- 2)
+
+                         3)             4)
+                     ____|_____     ____|_____
+                    |          |   |          |
+        | x < 100 = gee (x + 10) + gee (x - 20)   
+        | otherwise = 10
+
+
+      Also führen uns die rekursiven Aufrufe aus unserer definierte Menge (N + {0}) raus?
+      Antwort: Nein. Wir wissen ganz genau, dass die 'n' in diesem Fall mindestens 2 sein muss, weil es
+               sonst nicht zu dem Fall gekommen wäre. (Z.6 und Z.7 verhindern dies)
+               Weder 1) noch 2) wird unser 'n' ins Negative stürzen.
+
+
+Das heißt wir dürfen nun DEF) machen. Wenn AUF) schon nicht stimmt, dann taugt der Abstiegsbeweis nichts.
+
+DEF) Um herauszufinden ob alle möglichen Argumente für unsere Menge abfangen erinnern wir uns an unsere Menge:
+
+     Diese ist beschränkt auf ausschließlich positive Zahlen oder 0. Wenn wir nun unsere Fälle anschauen:
+
+     Z.6 fängt 0 ab
+     Z.7 fängt 1 ab
+     Z.8 fängt alle anderen positiven Zahlen ab. Dadurch haben wir offensichtlich unsere ganze Menge abgedeckt
+         und wissen das DEF) passt.
+
+
+Nun kommen wir zum etwas schwierigeren Part - der Abstiegsfunktion. Es wird immer behauptet dass diese
+mehr oder weniger zufällig gewählt werden muss und dann schaut man einfach mal obs passt. Das ist 
+wirklich nicht der Fall und es gibt eindeutige Indikatoren denen man folgen muss. Glücklicherweise ist es
+bei unserem Beispiel sehr einfach.
+
+
+ABST) Was ist denn nun eine Abstiegsfunktion? Diese muss folgende Eigenschaften erfüllen:
+
+    Für alle rekursiven Aufrufe muss folgendes gelten:
+
+      Sei f unsere Abstiegsfunktion n der Wert der reinkommt und m der Wert der beim rekursiven Aufruf benutzt wird:
+
+            f (n) > f (m)
+
+      Wenn wir diese Ungleichung zeigen können, dann haben wir eine geeignete Abstiegsfunktion gefunden.
+      Meistens ist es immer reicht einfach über was wir die Abstiegsfunktion machen - in diesem Fall über die
+      Werte an sich! Also die Zahl die in unsere Funktion fib reinkommt:
+
+      Beachte, wenn man eine ABST für eine Funktion die über Listen arbeitet finden will, wählt man meistens die Länge der Liste.
+
+      Schauen wir uns nun also die rekursiven Aufrufe an:
+
+      1) 
+
+      fib n = fib (n - 1) + ...
+
+      Da wir uns nur für die Argumente interessieren, schauen wir uns diese genauer an:
+
+      ... n = ... (n - 1)...
+
+      Das Argument auf der rechten Seite wird offensichtlich von alleine kleiner.
+
+      2)
+
+      fib n = ... + fib (n - 2)
+
+      Wieder nur die Argumente isolieren:
+
+      ... n = ... (n - 2)
+
+      Hier wird das Argument auf der rechten Seite wieder kleiner.
+
+
+      Jetzt müssen wir uns unsere Abstiegsfunktion wählen, die folgende Gleichungen erfüllt
+
+          f (n) > f (n - 1)     -- 1)
+
+      UND
+
+          f (n) > f (n - 2)     -- 2)
+
+      Man sieht recht schnell, dass wir hier nichts mehr tun müssen, also wählen wir
+
+          f (x) = x
+
+      Damit stimmen beide Gleichungen:
+
+          f (n) > f (n - 1)
+             n  > n - 1
+
+          f (n) > f (n - 2)
+             n  > n - 2
+
+      Damit haben wir also eine geeignete Abstiegsfunktion gefunden!
+
+
+Der strikt formale Beweis zeigt AUF), DEF) und ABST) mithilfe der zwei Fragen sowie der nötigen Gleichungen
+für ABST.
+
+Es wurde behauptet dass wir in diesem Semester weniger Wert auf Beweise legen und da es nur eine einzige Folie war,
+sollte das WAHRSCHEINLICH nicht zu intensiv gelernt werden. Es wird jedoch sicherlich verlang zumindestens einen
+nicht formalen Beweis auf die Beine zu stellen zu können.
+
+Dieser würde sich im Rahmen von Folgendem bewegen:
+
+"Die Eingabe ist definiert für N + {0}. Bei jedem rekursiven Aufruf wird die Eingabe immer kleiner. Alle Fälle die
+auftreten können sind definiert bzw. abgefangen (negative Zahlen können nicht auftreten, weil für die Falle wo 'n-1' oder 'n-2' aufgerufen wird, MUSS n >= 2 sein). Dadurch können wir schlussfolgern dass diese Funktion sicherlich terminiert."

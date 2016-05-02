@@ -20,7 +20,7 @@ import System.Environment
 
 main :: IO ()
 main = do
-    args   <- getArgs
+    args   <- getArgs :: IO [String]
     handle <- openFile (args !! 0) AppendMode
     putStrLn "Deutsches Wort:"
     dw <- getLine

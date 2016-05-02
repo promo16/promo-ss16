@@ -24,8 +24,31 @@ main = do
     contents <- hGetContents handle
     let dict = lines contents
 
+    content = "hallo servus\ngut guad\n..." 
+    dict    = lines "hallo servus\ngut guad\n..." 
+            = ["hallo servus", "gut guad", "..."]
+
+
+
     input <- getLine
+
+    input = "gut"
+
     let translated = [(words line) !! 1 | line <- dict, input `elem` (words line)]
+
+    --line <- dict, input `elem` (words line)
+    --"hallo servus" <- dict, "gut" `elem` (words "hallo servus")
+    --"hallo servus" <- dict, "gut" `elem` ["hallo", "servus"]
+    --"hallo servus" <- dict, False
+
+    --"gut guad" <- dict, "gut" `elem` (words "gut guad")
+    --"gut guad" <- dict, "gut" `elem` ["gut","guad"]
+    --"gut guad" <- dict, True
+
+    --(words "gut guad") !! 1
+    --["gut", "guad"] !! 1
+
+    --"guad"
 
     if null translated
         then print input
