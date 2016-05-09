@@ -34,13 +34,12 @@ Dafür ist folgender Schritt erst nötig:
 --
 tApp :: [a] -> [a] -> [a]
 tApp xs ys = go ys (reverse xs)
-    where
-        go :: [a] -> [a] -> [a]
-        go acc     [] = acc
-        go acc (x:xs) = go (x:acc) xs
+    where go :: [a] -> [a] -> [a] -> [a]
+          go ys []     = ys
+          go ys (x:xs) =  go (x:ys) xs
 
 -- Beispiel:
-
+--
 {-
    tApp [1,2,3] [4,5,6]
 => go   [4,5,6] (reverse [1,2,3])
@@ -50,6 +49,7 @@ tApp xs ys = go ys (reverse xs)
 => go   [3,4,5,6]     (2:[1])   = go (2:[3,4,5,6]) [1]
 => go   [2,3,4,5,6]   (1:[])    = go (1:[2,3,4,5,6]) []
 => go   [1,2,3,4,5,6] []        = [1,2,3,4,5,6]
+
 -}
 
 main :: IO ()

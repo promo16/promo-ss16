@@ -7,8 +7,8 @@ fib 0 = 1
 fib 1 = 1
 fib n = fib (n-1) + fib (n-2)
 
-Eingabewerte sind beschränkt auf die natürlichen Zahlen + {0}.
 
+Eingabewerte sind beschränkt auf die natürlichen Zahlen + {0}.
 
 Nun müssen wir durch eine geeignete Abstiegsfunktion beweisen dass diese Funktion definiert.
 
@@ -138,7 +138,7 @@ Der strikt formale Beweis zeigt AUF), DEF) und ABST) mithilfe der zwei Fragen so
 für ABST.
 
 Es wurde behauptet dass wir in diesem Semester weniger Wert auf Beweise legen und da es nur eine einzige Folie war,
-sollte das WAHRSCHEINLICH nicht zu intensiv gelernt werden. Es wird jedoch sicherlich verlang zumindestens einen
+sollte das WAHRSCHEINLICH nicht zu intensiv gelernt werden. Es wird jedoch sicherlich verlangt zumindestens einen
 nicht formalen Beweis auf die Beine zu stellen zu können.
 
 Dieser würde sich im Rahmen von Folgendem bewegen:

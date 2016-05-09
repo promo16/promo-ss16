@@ -1,0 +1,262 @@
+-- 5-2 a) Auswertung mit applikativen Auswertungsreihenfolge --
+
+-- Einführung - Auswertungsreihenfolgen:
+
+-- Es gibt drei Auswertungsreihenfolgen die uns interessieren
+--
+-- * Call-by-value  (auch applikative Reihenfolge genannt, wie es z.B C nutzt) 
+-- * Call-by-name   (auch normale Reihenfolge genannt, wie es fast jede andere Programmiersprache nutzt)
+-- * Call-by-need   (auch Lazy-Evaluation genannt, wie es Haskell nativ nutzt und Scala, Scheme, Python, C# es nutzen können)
+
+-- Fakten:
+-- * Call-by-need in Theorie am mächtigsten, weil es die Vorteile von c-b-Name/c-b-Value vereint
+-- * Wenn der Ausdruck immer terminiert, kommt das gleiche Ergebnis bei c-b-Name/c-b-Value raus
+-- * Für c-b-Name sowie c-b-Value kann man Terme definieren die für den anderen besser/schlechter ausfallen
+-- * c-b-Name kann viele Berechnungen sparen, wenn ganze Programmausdrücke nicht ausgewertet werden müssen
+--   e.g (\_ -> 1) (fib 10000) => 1
+-- * c-b-Value kann viele Berechnungen sparen, weil es Ausdrücke niemals doppelt auswerten muss
+--   e.g (\x -> x + x + x + x) (2 * 2 * 2 * 2) = 16 + 16 + 16 + 16 = 64
+
+-- Mögliche Probleme:
+-- * Wenn keine Klammern da sind, wie klammern wir richtig?
+--   => In Haskell wird in der Funktionsanwendung immer implizit links-geklammert
+--      1 + 2  + 3  + 4
+--     (1 + 2) + 3  + 4
+--    ((1 + 2) + 3) + 4
+--   (((1 + 2) + 3) + 4)
+
+-- * Die Typsignatur kommt aber immer zuvor - quadrat nimmt ein Argument
+--
+--   (\x y -> x * x) quadrat 2 3     -- wir können offensichtlich quadrat * quadrat nicht machen und das sagt und Haskell auch
+--                                   --   error:  Non type-variable argument in the constraint: Num (a -> a)
+--                                   --   Deswegen müssen wir zuerst die Typsignatur von quadrat zufrieden 
+--   (\x y -> x * x) (quadrat 2) 3   -- nun können wir wieder unsere Linksklammerung anwenden
+--
+--   ((\x y -> x * x) (quadrat 2)) 3
+--   (quadrat 2) * (quadrat 2) 
+--   ...
+
+-- * Auf Klammern aufpassen! Niemals unnötig auflösen
+
+
+-- #################################
+--
+-- Call-by-value wertet immer den innersten Ausdruck (innerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'außen':
+
+--    quadrat (quadrat (1+2))
+--                     -----
+--
+-- => quadrat (quadrat 3)
+--            -----------
+--
+-- => quadrat ((\x -> x * x) 3)
+--            -----------------
+--
+-- => quadrat (3 * 3)
+--            -------
+-- 
+-- => quadrat 9
+--    ---------
+--
+-- => (\x -> x * x) 9
+--    ---------------
+--
+-- => 9 * 9
+--    -----
+--
+-- => 81
+-- 
+-- #################################
+--
+-- Call-by-name wertet immer den äußersten Ausdruck (äußerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'innen':
+--
+--    quadrat (quadrat (1+2))
+--    -----------------------
+--
+-- => (\x -> x * x) (quadrat (1+2))
+--    -----------------------------
+--
+-- => (quadrat (1+2)) * (quadrat (1+2))
+--    -------------------------------
+--
+-- => (quadrat (1+2)) * (quadrat (1+2))      (man kann es sich aussuchen ob man lieber von links nach rechts oder umgekehrt auswertet,
+--    ---------------                         aber wenn man sich entscheidet, dann sollte man dabei bleiben, sonst gibts Punktabzug
+--                                            wir gehen von links nach rechts - Erklärung dazu unten)
+-- => ((\x -> x * x) (1+2)) * (quadrat (1+2))
+--                            ---------------
+--
+-- => ((\x -> x * x) (1+2)) * ((\x -> x * x) (1+2))
+--    ---------------------
+--
+-- => ((1+2) * (1+2)) * ((\x -> x * x) (1+2))
+--                       -------------------
+--
+-- => ((1+2) * (1+2)) * ((1+2) * (1+2))
+--     -----
+--
+-- => (3 * (1+2)) * ((1+2) * (1+2))
+--         -----
+--
+-- => (3 * 3) * ((1+2) * (1+2))
+--               -----
+--
+-- => (3 * 3) * (3 * (1+2))
+--                   -----
+--
+-- => (3 * 3) * (3 * 3)
+--     -----
+--
+-- => 9 * (3 * 3)
+--         -----
+--
+-- => 9 * 9
+--    -----
+--
+-- => 81
+
+-- Da dies offensichtlich extrem viel Schreibarbeit ist, kann man in Zukunft die innsersten Ausdrücke innersten
+-- gleichzeitig auswerten.
+--
+-- e.g ((1+2) * (1+2)) * ((1+2) * (1+2))
+--      -----   -----     -----   -----
+-- =>  (3     * 3)     * (3     * 3)
+--
+--
+--
+-- | Was passiert aber in dem folgenden Fall?
+--
+--
+-- Sei f = \x -> x + 1
+--
+-- (f 4) + (f (f 5))
+--
+-- Bauen wir einen AST (abstract-syntax-tree) (nicht klausurrelevant, hilft aber dem Verständnis) aus dem Ausdruck auf:
+
+--        (+)
+--      __/ \__
+--     /       \
+--   (f)      (f)
+--    |        |
+--    4       (f)
+--             |
+--             5
+--
+--
+-- Da es in der Vorlesung nicht genau festgelegt worden ist, darf man sich entscheiden, WIE man den
+-- innsersten, bzw. äußersten Ausdruck definiert. Man muss sich lediglich an eine Richtung halten, links -> rechts
+-- oder rechts -> links.
+
+-- Wenn wir jetzt die applikative Reihenfolge (call-by-value) machen, wähle ich nun einfach die Reihenfolge rechts -> links:
+-- Das heißt, ich wähle mir den 'untersten' Ausdruck aus dem rechtesten Teilbaum aus:
+
+--        (+)
+--      __/ \__
+--     /       \
+--   (f)      (f)
+--    |        |
+--    4       (f) ---> 
+--             |     > Der rechteste und unterste Ausdruck
+--             5  ---> 
+--
+-- Wenn wir (f 5) aber ausgerechnet haben, können wir das Ergebnis noch weiter Einsetzen:
+--
+--
+--        (+)
+--      __/ \__
+--     /       \
+--   (f)       (f)  -->
+--    |         |     > Der nächste Ausdruck
+--    4         6   -->
+--            
+--
+-- Nun sind wir mit der rechten Seite durch und können zur anderen Seite gehen:
+--
+--                                          (+)
+--                                        __/ \__
+--                                       /       \
+--                                 <-- (f)       7
+--   Der nächste unterste Ausdruck <    |
+--                                 <--  4
+--
+--  Im nächsten Schritt können wir nun den Rest auswerten:
+--
+--        (+)
+--      __/ \__
+--     /       \
+--    5        7
+--             
+-- => 12
+--
+--
+-- Die Reihenfolge ist euch frei überlassen, ob ihr nun wie hier von rechts nach links den 'innersten' Ausdruck sucht,
+-- oder andersrum.
+
+-- Nun zur Aufgabe - hier wurde in der Musterlösung die Reihenfolge links -> rechts benutzt.
+
+
+--         (s_quadrat)
+--      ______/  \_____
+--     /               \
+--    (-)           (quadrat)
+--   /  \              |
+--  5   2             (-)
+--                   /  \
+--                  3   1
+
+
+-- gegeben.
+quadrat :: Num a => a -> a
+quadrat = \x -> x * x
+
+summe_quadrate :: Num a => a -> a -> a
+summe_quadrate = \x y -> quadrat x + quadrat y
+
+-- Substitution von 'summe_quadrat (5-2) (quadrat (3-1))' mit call-by-value
+
+--    summe_quadrat (5-2) (quadrat (3-1)     1)
+--                   ---
+--
+-- =>  summe_quadrat 3 (quadrat (3-1))       2)
+--                               ---
+--
+-- => summe_quadrat 3 (quadrat 2)            3)
+--                    -----------
+--
+-- => summe_quadrat 3 ((\x -> x * x) 2)      4)
+--                    -----------------
+--
+-- => summe_quadrat 3 (2*2)                  5)
+--                    -----
+--
+-- => summe_quadrat 3 4                      6)
+--    -----------------
+--
+-- => (\x y -> quadrat x + quadrat y) 3 4    7)
+--    -----------------------------------
+--
+-- => quadrat 3 + quadrat 4                  8)
+--    ---------
+--
+-- => (\x -> x * x) 3 + quadrat 4            9)
+--    ---------------
+--
+-- => 3 * 3 + quadrat 4                     10)
+--    -----
+--
+-- => 9 + quadrat 4                         11)
+--        ---------
+--
+-- => 9 + (\x -> x * x) 4                   12)
+--        --------------- 
+--
+-- => 9 + 4 * 4                             13)
+--        -----
+--
+-- => 9 + 16                                14)
+--    ------
+--
+-- => 25
+--
+--
+-- Ich habe an dieser Stelle alles sehr ausführlich gemacht, aber man hätte auch
+-- 1 + 2, 8-11 + 11-14 gleichzeitig ausführen können.

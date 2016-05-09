@@ -34,7 +34,7 @@ tRev xs = go [] xs
     where
         go :: [a] -> [a] -> [a]
         go acc []     = acc
-        go acc (x:xs) = go (x:acc) xs
+        go acc (x:xs) = go (acc) xs
 
 -- Beispiel: tRev [1,2,3]
 {-

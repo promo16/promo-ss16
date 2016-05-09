@@ -10,6 +10,7 @@ CC = stack ghc
 FLAGS = -O2
 
 compile-all: clength cappend celem creverse clean
+profile-all: length append elem reverse
 
 clength: laenge.hs
 

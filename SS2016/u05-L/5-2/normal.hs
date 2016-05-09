@@ -1,0 +1,140 @@
+-- 5-2 b) Auswertung mit normalen Auswertungsreihenfolge --
+
+
+-- Bei der normalen Auswertung gehen wir den Baum nur 'stückweise' runter und werten jeden Zweig von oben so wenig wie möglich aus:
+-- Wir benutzen die Reihenfolge von links -> rechts:
+--
+--      (+)
+--    __/ \__
+--   /       \
+-- (f)      (f)
+--  |        |
+--  4       (f)
+--           | 
+--           5
+--
+-- =>
+--
+--      (+)
+--    __/ \__
+--   /       \
+-- (1+4)    (f)
+--           |
+--          (f)
+--           | 
+--           5
+--
+-- Nächster Schritt - wir gehen den zum rechten Ast und Werten den so wenig es geht aus::
+--
+--        (+)
+--      __/ \__
+--     /       \
+--   (1+4)    (1 + f)
+--               |
+--              (5)
+--   
+-- Jetzt springen wir wieder zum linken Ast:
+--
+-- 
+--        (+)
+--      __/ \__
+--     /       \
+--    5     (1 + f)
+--             |
+--            (5)
+--
+-- Nun wieder zum rechten:
+--
+--        (+)
+--      __/ \__
+--     /       \
+--    5     (1 + (1 + 5))
+--
+-- Im linken Ast gibt es nichts mehr auszuwerten, dsw bleiben wir beim rechten:
+--
+--        (+)
+--      __/ \__
+--     /       \
+--    5     (1 + 6)
+--
+--
+--        (+)
+--      __/ \__
+--     /       \
+--    5        7
+--
+-- => 12
+
+-- gegeben.
+quadrat :: Num a => a -> a
+quadrat = \x -> x * x
+
+summe_quadrate :: Num a => a -> a -> a
+summe_quadrate = \x y -> quadrat x + quadrat y
+
+-- Substitution von 'summe_quadrat (5-2) (quadrat (3-1))' mit call-by-name, links -> rechts
+
+--    summe_quadrat (5-2) (quadrat (3-1))                       1)
+--    -----------------------------------
+--
+-- => (\x y -> quadrat x + quadrat y) (5-2) (quadrat (3-1))     2)
+--    -----------------------------------------------------
+--
+-- => quadrat (5-2) + quadrat (quadrat (3-1))                   3)
+--    -------------
+--
+-- => (\x -> x * x) (5-2) + quadrat (quadrat (3-1))             4)
+--                          ----------------------
+--
+-- => (\x -> x * x) (5-2) + (\x -> x * x) (quadrat (3-1))       5)
+--    -------------------
+--
+-- => (5-2) * (5-2) + (\x -> x * x) (quadrat (3-1))             6)
+--                    -----------------------------
+--
+-- => (5-2) * (5-2) + ((quadrat (3-1) * (quadrat (3-1))         7)
+--    ---- 
+--
+-- => 3 * (5-2) + ((quadrat (3-1) * (quadrat (3-1))             8)
+--        ----
+--
+-- => 3 * 3 + (quadrat (3-1)) * (quadrat (3-1))                 9)
+--            ------------
+--
+-- => 3 * 3 + ((\x -> x * x) (3-1)) * quadrat (3-1)            10)
+--                                    -------------
+--
+-- => 3 * 3 + ((\x -> x * x) (3-1)) * ((\x -> x * x) (3-1))    11)
+--    -----
+--
+-- => 9 + ((\x -> x * x) (3-1)) * ((\x -> x * x) (3-1))        12)
+--        ---------------------
+--
+-- => 9 + ((3-1) * (3-1)) * ((\x -> x * x) (3-1))              13)
+--                           -------------------
+--
+-- => 9 + ((3-1) * (3-1)) * ((3-1) * (3-1))                    14)
+--         ----
+--
+-- => 9 + (2 * (3-1)) * ((3-1) * (3-1))                        15)
+--             -----
+--
+-- => 9 + (2 * 2) * ((3-1) * (3-1))                            16)
+--                   -----
+--
+-- => 9 + (2 * 2) * (2 * (3-1))                                17)
+--                       -----
+--
+-- => 9 + (2 * 2) * (2 * 2)                                    18)
+--        ------
+--
+-- => 9 + 4 * (2 * 2)                                          19)
+--            -------
+--
+-- => 9 + 4 * 4                                                20)
+--        -----
+--
+-- => 9 + 16                                                   21)
+--    ------
+--
+-- => 25                                                       22)

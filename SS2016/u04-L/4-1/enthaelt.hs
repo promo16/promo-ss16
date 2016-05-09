@@ -20,7 +20,7 @@ rElem x (y:ys) = x == y || rElem x ys
 -- Ähnlich wie bei laenge.hs wird hier gleichermaßen das Ergebnis von vorne drangehängt
 -- und der letzte rekursive Aufruf lässt folgendes beim Aufruf von rElem 3 [1,2,3] entstehen:
 
---    3 == 1 || 2 == 3 || 3 == 3 || False
+--    3 == 1 || 3 == 2 || 3 == 3 || False
 
 -- | Endrekursiv
 --
