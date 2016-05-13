@@ -8,7 +8,7 @@ f n = if null (quadrat n) /= n
           then summe_quadrate (n-2) (n-1)
           else n
 
--- Auswertung nach Call-by-Name von (f 3) (links -> rechts):
+-- Auswertung nach normale Auswertungsreihenfolge (Call-by-Name) von (f 3) (links -> rechts):
 --
 --    f 3                                                        1)
 --    ---

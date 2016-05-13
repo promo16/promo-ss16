@@ -41,7 +41,7 @@
 
 -- #################################
 --
--- Call-by-value wertet immer den innersten Ausdruck (innerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'außen':
+-- Applikative Reihenfolge (Call-by-value) wertet immer den innersten Ausdruck (innerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'außen':
 
 --    quadrat (quadrat (1+2))
 --                     -----
@@ -68,7 +68,7 @@
 -- 
 -- #################################
 --
--- Call-by-name wertet immer den äußersten Ausdruck (äußerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'innen':
+-- Normale Reihenfolge (Call-by-name) wertet immer den äußersten Ausdruck (äußerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'innen':
 --
 --    quadrat (quadrat (1+2))
 --    -----------------------
@@ -121,8 +121,8 @@
 --      -----   -----     -----   -----
 -- =>  (3     * 3)     * (3     * 3)
 --
--- Beispiel - parallele Auswertung - call-by-name:
--- Call-by-name wertet immer den äußersten Ausdruck (äußerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'innen':
+-- Beispiel - parallele Auswertung - normale Reihenfolge (call-by-name):
+-- Wir werten immer den äußersten Ausdruck (äußerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'innen':
 --
 --    quadrat (quadrat (1+2))
 --    -----------------------
@@ -131,7 +131,7 @@
 --    -----------------------------
 --
 -- => (quadrat (1+2)) * (quadrat (1+2))
---    -------------------------------
+--    ---------------------------------
 --
 -- => ((\x -> x * x) (1+2)) * ((\x -> x * x) (1+2))
 --    --------------------------------------------
@@ -222,7 +222,7 @@
 --         (s_quadrat)
 --      ______/  \_____
 --     /               \
---    (-) 3          (quadrat)
+--    (-)           (quadrat)
 --   /  \              |
 --  5   2             (-)
 --                   /  \
@@ -285,7 +285,7 @@ summe_quadrate = \x y -> quadrat x + quadrat y
 --
 
 -- parallele Auswertung mit applikativer Reihenfolge:
-
+--
 --    summe_quadrat (5-2) (quadrat (3-1)     1)
 --                   ---
 --

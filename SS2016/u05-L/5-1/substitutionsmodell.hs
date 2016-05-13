@@ -19,13 +19,13 @@ foo'''       =  \x y z -> x + y + z
 -- --------------------------------------------
 
 goo :: (Int, Char) -> String
-goo (i, c) = "hallo " ++ c
+goo (i, c) = "hallo " ++ [c]
 
 goo' :: (Int, Char) -> String
-goo'       = \(i,c) -> "hallo " ++ c
+goo'       = \(i,c) -> "hallo " ++ [c]
 
 goo'' :: (Int, Char) -> String
-goo''      = \(_,c) -> "hallo " ++ c
+goo''      = \(_,c) -> "hallo " ++ [c]
 
 -- --------------------------------------------
 
@@ -81,13 +81,12 @@ ioo''' = \_ -> 10
 -- Wir werten immer ZUERST B aus, und danach erst A1 ODER A2. Egal welche Auswertungsstrategie wir benutzen.
 
 -- ######################
--- # let A = ... [in] B #
+-- # let V = ... [in] A #
 -- ######################
 
--- Wir fügen A der Umgebung hinzu und B wird mit der neuen Umgebung ausgeführt. NACHDEM B ausgewertet wurde,
--- wird A aus der Umgebung entfernt. Ob das 'in' dasteht oder nicht, ist egal. Alles was nach dem Ende vom
--- Ausdruck A kommt, wird mit der aktualisierten Umgebung auswertet.
-
+-- Wir fügen V der Umgebung hinzu und B wird mit der neuen Umgebung ausgeführt. NACHDEM B ausgewertet wurde,
+-- wird V aus der Umgebung entfernt. Ob das 'in' dasteht oder nicht, ist egal. Alles was nach dem Ende vom
+-- Ausdruck V kommt, wird mit der aktualisierten Umgebung auswertet.
 
 -- Nun zur Aufgabe:
 --
