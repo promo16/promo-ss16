@@ -89,8 +89,6 @@ ioo''' = \_ -> 10
 -- Ausdruck A kommt, wird mit der aktualisierten Umgebung auswertet.
 
 
-
-
 -- Nun zur Aufgabe:
 --
 -- gegeben:

@@ -9,7 +9,7 @@ f n = if null (quadrat n) /= n
           else n
 
 -- Auswertung nach Call-by-Name von (f 3) (links -> rechts):
-
+--
 --    f 3                                                        1)
 --    ---
 --
@@ -72,5 +72,48 @@ f n = if null (quadrat n) /= n
 -- => 5
 --
 
+-- parallele Auswertung:
 
-
+--    f 3                                                        1)
+--    ---
+--
+-- => if null (quadrat 3) /= 3                                   2) Unsere if-then-else Regel greift! Zuerst Bedingung auswerten
+--       --------------- 
+--          then summe_quadrate (3-2) (3-1)
+--          else 3
+--
+-- => if 0 /= 3                                                  3)
+--       ------
+--          then summe_quadrate (3-2) (3-1)
+--          else 3
+--
+-- => if True                                                    4)
+--    -------
+--          then summe_quadrate (3-2) (3-1)
+--          -------------------------------
+--          else 3
+--          ------
+--
+-- => summe_quadrate (3-2) (3-1)                                 5)
+--    --------------------------
+--
+-- => (\x y -> quadrat x + quadrat y) (3-2) (3-1)                6)
+--    -------------------------------------------
+--
+-- => quadrat (3-2) + quadrat (3-1)                              7)
+--    ------------    -------------
+--
+-- => (\x -> x * x) (3-2) + (\x -> x * x) (3-1)                  9)
+--    -------------------   -------------------
+--
+-- => (3-2) * (3-2) + (3-1) * (3-1)                             10)
+--    -----   ----    ----    ----
+--
+-- => 1 * 1 + 2 * 2                                             11)
+--    -----   -----
+--
+-- => 1 + 4                                                     12)
+--    -----
+--
+-- => 5                                                         13)
+--

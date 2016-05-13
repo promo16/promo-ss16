@@ -121,7 +121,33 @@
 --      -----   -----     -----   -----
 -- =>  (3     * 3)     * (3     * 3)
 --
+-- Beispiel - parallele Auswertung - call-by-name:
+-- Call-by-name wertet immer den äußersten Ausdruck (äußerste Klammer) aus und geht dann immer Schritt für Schritt weiter nach 'innen':
 --
+--    quadrat (quadrat (1+2))
+--    -----------------------
+--
+-- => (\x -> x * x) (quadrat (1+2))
+--    -----------------------------
+--
+-- => (quadrat (1+2)) * (quadrat (1+2))
+--    -------------------------------
+--
+-- => ((\x -> x * x) (1+2)) * ((\x -> x * x) (1+2))
+--    --------------------------------------------
+--
+-- => ((1+2) * (1+2)) * ((1+2) * (1+2))
+--    --------------------------------
+--
+-- => (3 * 3) * (3 * 3)
+--    -----------------
+--
+-- => 9 * 9
+--    -----
+--
+-- => 81
+
+
 --
 -- | Was passiert aber in dem folgenden Fall?
 --
@@ -131,7 +157,7 @@
 -- (f 4) + (f (f 5))
 --
 -- Bauen wir einen AST (abstract-syntax-tree) (nicht klausurrelevant, hilft aber dem Verständnis) aus dem Ausdruck auf:
-
+--
 --        (+)
 --      __/ \__
 --     /       \
@@ -139,8 +165,7 @@
 --    |        |
 --    4       (f)
 --             |
---             5
---
+--             5 
 --
 -- Da es in der Vorlesung nicht genau festgelegt worden ist, darf man sich entscheiden, WIE man den
 -- innsersten, bzw. äußersten Ausdruck definiert. Man muss sich lediglich an eine Richtung halten, links -> rechts
@@ -197,7 +222,7 @@
 --         (s_quadrat)
 --      ______/  \_____
 --     /               \
---    (-)           (quadrat)
+--    (-) 3          (quadrat)
 --   /  \              |
 --  5   2             (-)
 --                   /  \
@@ -258,5 +283,40 @@ summe_quadrate = \x y -> quadrat x + quadrat y
 -- => 25
 --
 --
--- Ich habe an dieser Stelle alles sehr ausführlich gemacht, aber man hätte auch
--- 1 + 2, 8-11 + 11-14 gleichzeitig ausführen können.
+
+-- parallele Auswertung mit applikativer Reihenfolge:
+
+--    summe_quadrat (5-2) (quadrat (3-1)     1)
+--                   ---
+--
+-- =>  summe_quadrat 3 (quadrat (3-1))       2)
+--                               ---
+--
+-- => summe_quadrat 3 (quadrat 2)            3)
+--                    -----------
+--
+-- => summe_quadrat 3 ((\x -> x * x) 2)      4)
+--                    -----------------
+--
+-- => summe_quadrat 3 (2*2)                  5)
+--                    -----
+--
+-- => summe_quadrat 3 4                      6)
+--    -----------------
+--
+-- => (\x y -> quadrat x + quadrat y) 3 4    7)
+--    -----------------------------------
+--
+-- => quadrat 3 + quadrat 4                  8)
+--    ---------   ---------
+--
+-- => (\x -> x * x) 3 + (\x -> x * x) 4      9)
+--    ---------------   ---------------
+--
+-- => 3 * 3 + 4 * 4                         10)
+--    -----   -----
+--
+-- => 9 + 16                                11)
+--    ------
+--
+-- => 25                                    12)
