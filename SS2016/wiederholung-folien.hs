@@ -285,7 +285,6 @@ inhalt KeineAhnung       = "Kein Inhalt angegeben"
 -- Um uns das Leben einfacher zu machen, kann man die Argumente der Konstrukoren benennen. Das nennt sich RecordSyntax
 
 data Orc = Orc { ap :: Int, mp :: Int, schrei :: String }
-           Orc Int Int String
 
 orc :: Orc
 orc = Orc { ap = 10, schrei = "Uarhhhhg!", mp = 1 }
@@ -375,15 +374,6 @@ int = undefined
 yInt = case int of
        _ -> 1                   -- 1
 
-
-data Handymarken = Nokia { modell :: Int }
-
-data MBool = MTrue { get :: MyString }
-
-newtype MyString = MyString2 { getString :: String }
-
-
-data Maybe a = Just a | Nothing
 
 -- | Der wichte Schritt passiert in den Fällen von y2 -> y3. Neben dem unären Konstroktor + Feld verhält sich ein newtype genauso wie
 --   primitiver Typ. Man sollte neben den beiden Einschränkungen mitnehmen, dass so ein Typ KEIN overhead für die Instanziierung mit sich trägt.
