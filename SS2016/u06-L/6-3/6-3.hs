@@ -11,7 +11,7 @@ a = [1, 2, 3]
 --b)
 
 b :: String
-b = "ab"++ ['c', 'd']
+b = "ab" ++ ['c', 'd']
 
 -- Wer vom Blatt kopiert muss die single-quotes um 'c' und 'd' ändern, weil man für Latex ein extra package nutzen muss damit das geht...
  
@@ -36,9 +36,10 @@ e = [("a", 1), ("b", 2)]
 
 --f)
 
+
 -- f = [1, 2, [3, 4, [5]]]
 
--- => Typefehler! Die Elemente in einer Liste müssen vom selben Typ sein!
+-- => Typfehler! Die Elemente in einer Liste müssen vom selben Typ sein!
 
 --g)
 

@@ -90,7 +90,7 @@ summe_quadrate = \x y -> quadrat x + quadrat y
 
   => summe_quadrat (5-2) (quadrat (3-1))                    []            -- | Suchen von unbenutzer Variable für 5-2 und in ein let umwandeln
 
-  => let a = 5 - 2
+  => let a = 5 - 2 
      in summe_quadrat a (quadrat (3-1))                     []            -- | Analog für 'quadrat (3-1)' und Umgebung aktualisieren
 
   => let b = quadrat (3-1)
@@ -116,25 +116,27 @@ summe_quadrate = \x y -> quadrat x + quadrat y
       => quadrat (3-1)                                      [(b, quadrat (3-1)), (a, 3)]
 
 -- | Wieder unbenutze Variable suchen für 3-1 und in ein let umwandeln
+--   Hier haben wir die Annahme getroffen, dass wir die Umgebung immer aktualisiert wird
+     Also überschreiben wir (b, quadrat (3-1)) mit(b, quadrat ^c)
 
       => let c = 3 - 1
       => in quadrat c                                       [(c, 3 - 1), (b, quadrat (3-1)), (a, 3)]
 
-      => quadrat c                                          [(c, 3 - 1), (b, quadrat (3-1)), (a, 3)]
+      => quadrat c                                          [(c, 3 - 1), (b, quadrat ^c), (a, 3)]
 
-      => (\x -> x * x) c                                    [(c, 3 - 1), (b, quadrat (3-1)), (a, 3)]
+      => (\x -> x * x) c                                    [(c, 3 - 1), (b, quadrat ^c), (a, 3)]
 
       => ^c * ^c                                            -- ^c ist ein Zeiger auf c
 
-          => c                                              [(c, 3 - 1), (b, quadrat (3-1)), (a, 3)]
-          => 3-1                                            [(c, 3 - 1), (b, quadrat (3-1)), (a, 3)]
-          => 2                                              [(c, 3 - 1), (b, quadrat (3-1)), (a, 3)]
+          => c                                              [(c, 3 - 1), (b, quadrat ^c), (a, 3)]
+          => 3-1                                            [(c, 3 - 1), (b, quadrat ^c), (a, 3)]
+          => 2                                              [(c, 3 - 1), (b, quadrat ^c), (a, 3)]
 
-      => 2 * 2                                              [(c, 2), (b, quadrat (3-1)), (a, 3)]
+      => 2 * 2                                              [(c, 2), (b, quadrat c^), (a, 3)]
 
-      => 4                                                  [(c, 2), (b, quadrat (3-1)), (a, 3)]
+      => 4                                                  [(c, 2), (b, quadrat c^), (a, 3)]
 
-      => _                                                  [(b, quadrat (3-1)), (a, 3)]
+      => _                                                  [(b, quadrat 2), (a, 3)]
 
 -- | b aktualisieren und das Ergebnis einsetzen
 

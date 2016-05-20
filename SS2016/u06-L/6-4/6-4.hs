@@ -35,7 +35,7 @@ boo x = if boo(x) == boo(x)
 
 -- c)
 
-coo :: (Ord a, Num b) => a -> a -> b -> b
+coo :: (Ord a, Num c) => a -> a -> c -> c
 coo x y z = if x > y then z else z + 1
 
 -- Warum Ord?
@@ -48,6 +48,8 @@ coo x y z = if x > y then z else z + 1
 -- Weil wir auf 'z' 1 addieren
 
 -- d)
+
+-- doo :: (Eq a, Num a) => a -> a
 
 doo :: (Eq a, Num a) => a -> a
 doo 0 = 1

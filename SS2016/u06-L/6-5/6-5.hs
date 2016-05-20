@@ -65,7 +65,7 @@ data Wochentag = Montag
 -- b) Erstellen sie eine Funktion 'gestern :: Wochentag -> Wochentag'
 
 gestern :: Wochentag -> Wochentag
-gestern Montag     = Sonntag
+gestern Montag     = Sonntag 
 gestern Dienstag   = Montag
 gestern Mittwoch   = Dienstag
 gestern Donnerstag = Mittwoch

@@ -233,11 +233,11 @@ goo _       = "No hello for you!"
 -- Datentypname
 -- \         / 
 --  \       /
---   |     |  Konstruktorname    Argumente
---   |     |  \           _/    /  ______/
---   |     |  |          |   __/  /
---   |     |  |          |  |    |
-data Zeitung = Sueddeutsche String
+--   |     |   Konstruktorname    Argumente
+--   |     |   \           _/    /  ______/
+--   |     |   |          |  ___/  /
+--   |     |   |          | |     |
+data Zeitung = Sueddeutsche String 
              | Spiegel      String   -- zweiter Konstruktor
              | KeineAhnung           -- dritter Konstruktor ohne Argument
 
@@ -285,9 +285,10 @@ inhalt KeineAhnung       = "Kein Inhalt angegeben"
 -- Um uns das Leben einfacher zu machen, kann man die Argumente der Konstrukoren benennen. Das nennt sich RecordSyntax
 
 data Orc = Orc { ap :: Int, mp :: Int, schrei :: String }
+           Orc Int Int String
 
 orc :: Orc
-orc = Orc { ap = 10, mp = 1, schrei = "Uarhhhhg!" }
+orc = Orc { ap = 10, schrei = "Uarhhhhg!", mp = 1 }
 
 -- Man kann damit sehr einfach neue Ausdrücke erstellen, ohne den gesamten kopieren zu müssen
 -- Die Reihenfolge muss nicht eingehalten werden
@@ -365,7 +366,7 @@ y3 = case undefined of
 
 -- äquivalent zu dem Ausdruck y3
 y4 = case undefined of
-     _      -> 1
+          _ -> 1  -- 1
  
 -- Demonstration of Int behavior
 int :: Int
@@ -374,6 +375,15 @@ int = undefined
 yInt = case int of
        _ -> 1                   -- 1
 
+
+data Handymarken = Nokia { modell :: Int }
+
+data MBool = MTrue { get :: MyString }
+
+newtype MyString = MyString2 { getString :: String }
+
+
+data Maybe a = Just a | Nothing
 
 -- | Der wichte Schritt passiert in den Fällen von y2 -> y3. Neben dem unären Konstroktor + Feld verhält sich ein newtype genauso wie
 --   primitiver Typ. Man sollte neben den beiden Einschränkungen mitnehmen, dass so ein Typ KEIN overhead für die Instanziierung mit sich trägt.
@@ -389,7 +399,7 @@ yInt = case int of
 -- \      ____/  \  _______/
 --  \    / _______\/
 --   |  | |
---   |  | |   
+--   |  | |
 --   |  | |   Konstruktorname  Argumente
 --   |  | |   \     _______/  |         |
 --   |  | |   |    |   _______|         |
