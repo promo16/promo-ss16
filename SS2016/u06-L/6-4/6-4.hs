@@ -11,7 +11,7 @@ aoo x = if aoo x == aoo x
             else aoo x > aoo x
 
 -- Warum kein Eq, bzw Ord?
--- Bool hat Instanzen den diesen Typklassen.
+-- Bool hat Instanzen in diesen Typklassen.
 
 -- Was macht diese Funktion?
 -- Sie terminiert nicht.
