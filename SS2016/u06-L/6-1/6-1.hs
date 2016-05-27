@@ -5,15 +5,12 @@
 --
 -- Diese Art von Auswertung wird auch Lazy-Evaluation, oder Call-by-Need genannt.
 -- Sie verbindet die Vorteile von applikativen / normalen Auswertungsreihenfolgen
--- und erlaubt uns einfachere Memoisation (ohne r!)
+-- und erlaubt uns einfachere Memoisation
 --
 -- Das bedeutet sprichwörtlich - wir rechnen nur das aus was wir gerade brauchen und 
 -- wenn wir es mehrmals brauchen, speichert man es sich ab, damit man es nicht mehrmals rechnen muss.
 --
--- Dieses Speichern wird durch sog. 'thunks' umgesetzt. Das sind unausgewertet Ausdrücke die wir im
--- Folgenden mit Pfeilen und (.) anzeigen werden.
---
--- Diese zeigen uns die Ausdrücke auf die doppelt vorkommen, bzw die die voneinander abhängig sind.
+-- Dieses Speichern wird durch sog. 'thunks' umgesetzt. Diese Ausdrücke führen wir mit 'let's ein.
 --
 -- Wir gehen zum Anfang genauso vor wie bei normaler Auswertungsreihenfolge.
 --
