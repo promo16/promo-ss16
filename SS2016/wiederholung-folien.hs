@@ -398,7 +398,6 @@ data Baum a = Knoten (Baum a) a (Baum a)
             | Blatt -- ------------------------ zweiter Konstruktor ohne Argumente
     deriving Show   -- ------------------------ automatisch erstellte Instanz damit wir uns auf der Konsole den Datentyp anschauen können
 
-
 -- Was bedeutet dieses 'a'?
 --
 --    Das ist ein sog. Typparameter. Dafür können wir jeden Datentyp einsetzen, ob es nun Int, String, Char, oder [(Char, Int)] ist.
@@ -487,23 +486,21 @@ tiefe3 = Knoten tiefe2 3 tiefe1
 --          /      \                                    
 -- (Nr.8) Blatt    Blatt   (Nr.9)
 
--- Damit wir das Ergebnis sehen, sammele ich hier die Elemente einfach auf und gebe sie zurück
+-- Damit wir das Ergebnis sehen, sammele ich hier die Elemente einfach auf und gebe sie zurück (Blätter fülle ich mit 0en zur Anschaulichkeit)
 
-breadthElements :: Baum Int -> [Int]
-breadthElements baum = go [baum]
+breadthElementsTC :: Baum Int -> [Int]
+breadthElementsTC baum = go [baum]
     where
         go :: [Baum Int] -> [Int]
         go                             [] = []
-        go ( Blatt                   :xs) = go xs
-        go ((Knoten left value right):xs) = value : go (left:right:xs)
+        go ( Blatt                   :xs) = 0 : go xs
+        go ((Knoten left value right):xs) = value : go (xs ++ [left, right])
 
 -- Hier benutze ich einen Trick - ich verpacke den Baum als Liste! Dadurch gewinne ich die Möglichkeit
 -- die Teilbäume in genau der Reihenfolge an die Liste dranzuhängen wie ich will. Damit lege ich fest,
 -- wie ich den Baum durchlaufe.
 
 -- Das ist am Anfang immer etwas komisch so rekursiv zu denken, aber versucht den Algorithmus im Kopf durchzulaufen.
-
--- Bonus - Wie macht man diese Aufgabe endrekursiv?
 
 -- | Versuchen wir nun den Tiefendurchlauf zu machen (dieser geht immer den linksten Ast zuerst durch)
 --
@@ -527,6 +524,18 @@ depthElements (Knoten left value right) = value : depthElements left ++ depthEle
 -- Die Idee ist hier einfach den linken Ast zuerst auszuwerten, dann passiert das Backtracking automatisch!
 -- Versucht für jeden Knoten im Diagramm oben die Funktion durchzulaufen und dann sieht man wie sich die
 -- Reihenfolge von alleine ergibt.
+
+-- Endrekursive Definition vom Tiefendurchlauf:
+-- Man bemerke wie ähnlich er sich zu dem Breitendurchlauf ausschaut
+--
+depthElementsTC :: Baum Int -> [Int]
+depthElementsTC baum = go [baum]
+    where
+        go :: [Baum Int] -> [Int]
+        go                             [] = []
+        go ( Blatt                   :xs) = 0 : go xs
+        go ((Knoten left value right):xs) = value : go (left:right:xs)
+
 
 -- Mögliche Übungen:
 --
