@@ -17,15 +17,9 @@ rElem :: Eq a => a -> [a] -> Bool
 rElem x []     = False
 rElem x (y:ys) = x == y || rElem x ys
 
--- Ähnlich wie bei laenge.hs wird hier gleichermaßen das Ergebnis von vorne drangehängt
--- und der letzte rekursive Aufruf lässt folgendes beim Aufruf von rElem 3 [1,2,3] entstehen:
+-- Hier ist der letzte rekursive Aufruf '(3 == 3) || ...' , wenn man die vorherigen Schritte für 1 und 2 durchläuft.
 
---    3 == 1 || 3 == 2 || 3 == 3 || False
-
--- | Endrekursiv
---
-
--- Bei den folgenden zwei Beispielen haben wir keine Hilfsfunktion - aber warum?
+-- VERBESSERUNG (!!)
 --
 tElem :: Eq a => a -> [a] -> Bool
 tElem x []     = False
@@ -48,19 +42,25 @@ tElem x (y:ys)
 
 => True
 
-  Hier haben wir beim letzten rekursiven Aufruf sofort das Ergebnis rausbekommen! Wenn wir mit einer
-  Funktion arbeiten die jederzeit abbrechen kann und das Ergebnis liefern kann, braucht es keine Hilfsfunktion!
+-- Diese Lösung auch nicht endrekursiv. Wenn man genau hinschaut, wird bei dem letzten rekursiven Aufruf lediglich
+-- ein Guard abgefragt, der widerrum (3 == 3) abfragt. Damit stand das Ergebnis beim letzten Aufruf nicht fest
+-- => NICHT endrekursiv
 
 -}
 
+
+-- Analog zur Guard - Lösung (nicht endrekursiv)
+--
 tElem' :: Eq a => a -> [a] -> Bool
 tElem' x []     = False
 tElem' x (y:ys) = if x == y 
                       then True
                       else tElem' x ys
 
--- Natürlich können wir es trotzdem hinschreiben. 
--- Die Laufzeit wird dadurch dennoch schlechter, weil der Overhead ein Bit (0/1) durchzureichen zu groß
+
+-- Endrekursiv
+--
+-- Die Laufzeit wird dadurch aber leider schlechter, weil der Overhead ein Bit (0/1) durchzureichen zu groß
 -- ist.
 tElem'' :: Eq a => a -> [a] -> Bool
 tElem'' x ys = go False x ys
@@ -68,6 +68,14 @@ tElem'' x ys = go False x ys
         go :: Eq a => Bool -> a -> [a] -> Bool
         go !b x     [] = b
         go !b x (y:ys) = go (b || x == y) x ys
+
+
+-- Endrekursiv
+--
+-- foldl ist eine Funktion die immer endrekursiv ist. (mehr zu der Erklärung im Blatt 8)
+--
+tElem''' :: Eq a => a -> [a] -> Bool
+tElem''' e l = foldl (\xs x -> e == x || xs) False l
 
 main :: IO ()
 main = defaultMain [
