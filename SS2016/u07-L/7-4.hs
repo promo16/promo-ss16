@@ -4,7 +4,7 @@
 -- gegeben:
 
 length' :: [a] -> Int
-length' []     = []
+length' []     = 0
 length' (x:xs) = 1 + length' xs
 
 -- z.z Termination durch eine Abstiegsfunktion
@@ -36,7 +36,7 @@ length' (x:xs) = 1 + length' xs
 --
 --      Sei beliebig |xs| = n
 --
---          length' (x:xs) => f (x:xs) = | (x:xs) | = 1 + n < n = | xs | = f (xs) <= length' xs
+--          length' (x:xs) => f (x:xs) = | (x:xs) | = 1 + n > n = | xs | = f (xs) <= length' xs
 --
 --      Damit haben wir eine Abstiegsfunktion gefunden die für ALLE (in diesem Fall einer) rekursiven Aufrufe immer kleiner wird.
 --

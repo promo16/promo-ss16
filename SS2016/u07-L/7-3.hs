@@ -19,7 +19,7 @@ plus n m
 minus :: Integer -> Integer -> Integer
 minus n m
     | m == 0    = n                             -- minus 3  0 => 3
-    | m  < 0    = minus (succ' n) (succ' m)     -- minus 3 -1 => minus (succ' 3) (succ' -1) => minus 4 0 => 4
+    | m  < 0    = minus (succ' n) (succ' m)     -- minus 3 (-1) => minus (succ' 3) (succ' -1) => minus 4 0 => 4
     | otherwise = minus (pred' n) (pred' m)     -- minus 3  1 => minus (pred' 3) (pred'  1) => minus 2 0 => 2
 
 
@@ -35,5 +35,5 @@ mult n m
 
 mod' :: Integer -> Integer -> Integer
 mod' n m
-  | n < m     = n 
+  | n < m     = n
   | otherwise = mod' (n `minus` m)  m

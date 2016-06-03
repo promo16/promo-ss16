@@ -16,6 +16,7 @@ intFac :: Integral a => a -> [a]
 intFac m = go m (sieve m)
     where
         go :: Integral a => a -> [a] -> [a]
+        go n [] = []
         go n (x:xs)
             | n `elem` (x:xs) = [n]                        -- ist n eine Primzahl?
             | n `mod` x == 0  = x : go (n `div` x) (x:xs)  -- teilt x n? Dann ist es ein Primfaktor
@@ -40,3 +41,18 @@ intFac m = go m (sieve m)
     => [2,5]
 
 -}
+
+-- Lösung von einem Studenten:
+
+hprim :: Int -> Int
+hprim x =  [y | y <- [2..], x `mod` y == 0] !! 0
+
+primfak :: Int -> [Int]
+primfak x | x <= 1 = []
+          | x > 1  = [hprim x] ++ primfak (x `div` (hprim x))
+
+-- ( •_•)
+-- ( •_•)>⌐■-■
+-- (⌐■_■) #Yeeaaahhhh
+
+
