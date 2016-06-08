@@ -35,22 +35,20 @@ data Value = Two
 -- *) Wir brauchen Enum, weil wir [Two .. Ace] schreiben wollen
 -- *) Wir brauchen Show für die Ausgabe (eher unwichtig)
 
-data Card = Value `Of` Suit          -- data Card = Of Value Suit   (analog)
-    deriving (Eq, Show)              -- b)
+data Card = Value `Of` Suit      -- data Card = Of Value Suit   (analog)
+    deriving (Show)              -- b)
 
 -- *) Hier habe ich einen Konstruktor infix gesetzt, damit man es mal gesehen hat - des öfteren vereinfacht das die Lesbarkeit
 -- *) Show wird hier automatisch durch die Show Instanzen von Value und Suit abgeleitet
--- *) Wir brauchen Eq für die später definierte Ord-Instanz (hier werden lediglich beide Werte verglichen)
-
---    Diese Instanz sieht ausgeschrieben so aus:
---
--- instance Eq Card where
-
---    (==) (v1 `Of` s1) (v2 `Of` s2) = v1 == v2 && s1 == s2
-
 
 -- c) Hearts sticht alles, ansonsten wird die Wertigkeit der Karte verglichen
 --
+-- Um Doppeldeutigkeit zu vermeiden definieren wir Eq through Ord:
+--
+instance Eq Card where
+
+    (==) c1 c2 = compare c1 c2 == EQ
+
 instance Ord Card where
 
     compare (val1 `Of` Hearts) (val2 `Of` Hearts) = compare val1 val2
@@ -65,10 +63,10 @@ instance Ord Card where
 -- Suits nach ihrer Definitionsreihenfolge.
 
 -- > Nine `Of` Clubs `compare` Nine `Of` Spades
--- LT
+-- LT     (es sollte EQ sein)
 
 -- > Seven `Of` Hearts `compare` Ten `Of` Diamonds
--- LT
+-- LT     (es sollte GQ sein)
 
 -- Das ist natürlich nicht gewollt und deswegen muss man die Instanz selber definieren
 
