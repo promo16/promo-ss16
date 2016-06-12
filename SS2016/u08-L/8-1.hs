@@ -8,7 +8,7 @@ data Suit = Clubs
           | Hearts
           | Spades
           | Diamonds
-    deriving (Eq, Enum, Show, Ord)         -- b) Definieren sie "nützliche" Instanzen (mehr eine Aufgabe die durch c) und d) verständlich wird)
+    deriving (Eq, Enum, Show)         -- b) Definieren sie "nützliche" Instanzen (mehr eine Aufgabe die durch c) und d) verständlich wird)
 
 -- *) Wir brauchen Eq, weil wir die Gleichheit von Karten bestimmen wollen
 -- *) Wir brauchen Enum, weil wir dann [Clubs .. Diamonds] schreiben wollen
@@ -79,7 +79,7 @@ instance Ord Card where
 -- Two `Of` Spades
 -- ...
 
--- d) Erstelle alle Karte in einem Deck
+-- d) Erstelle alle Karten in einem Deck
 --
 cards :: [Card]
 cards = [val `Of` suit | suit <- [Clubs .. Diamonds], val <- [Two .. Ace]]
