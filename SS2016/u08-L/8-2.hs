@@ -77,13 +77,16 @@ all pred (x:xs)
 
 -- λ> all even [1,2,4] => False
 
--- λ> all (\x -> 'l') "Hallo" => False
-
+-- λ> all (\x -> x == 'l') "Hallo" => False
 
 -- c) implementieren sie map :: (a -> b) -> [a] -> [b]
 
 map :: (a -> b) -> [a] -> [b]
 map f l = foldr (\x xs -> f x : xs) [] l
+
+foldr :: (a -> [b] -> [b]) -> [b] -> [a] -> [b]
+
+
 
 -- λ> map toUpper "bluf"
 -- 
@@ -202,18 +205,17 @@ myFoldr f acc (x:xs) = f x (myFoldr f acc xs)
 --
 -- Definiere die Funktion 'reverse :: [a] -> [a]', 'length :: [a] -> Int', 'concat :: [[a]] -> [a]' mithilfe von foldl / foldr:
 
-
 -- Definition der abgefragten Funktionen
 concat :: [[a]] -> [a]
 concat []     = []
 concat (x:xs) = x ++ concat xs
 
 length :: [a] -> Int
-length [] = 0
+length []     = 0
 length (_:xs) = 1 + length xs
 
 reverse :: [a] -> [a]
-reverse [] = []
+reverse []     = []
 reverse (x:xs) = reverse xs ++ [x]
 
 
@@ -269,7 +271,6 @@ length''''' l = foldl (const . succ) 0 l
 length''''''' :: [a] -> Int
 length''''''' l = sum [1 | _ <- l]
 
-
 reverse'    :: [a] -> [a]
 reverse'    l = foldl (\xs x -> x : xs) [] l
 
@@ -286,7 +287,3 @@ reverse'''' :: [a] -> [a]
 reverse'''' l = foldl (\xs x -> flip (:) xs x) [] l
 --                          ->       (:) x xs
 --                          ->        x  : xs
-
-
-
-

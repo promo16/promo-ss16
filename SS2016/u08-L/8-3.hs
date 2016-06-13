@@ -7,7 +7,10 @@ import Prelude hiding (zipWith)
 --
 -- Diese Funktion kann oft nützlich sein, wenn man Listen auf die gleiche Länge bringen will (und wenn man mit unendlichen Listen arbeitet)
 --
--- fibs = 0 : 1 : zipWith (++) (tail fibs) fibs
+
+fibs :: [Integer]
+fibs = 0 : 1 : zipWith (+) (tail fibs) fibs
+
 -- [0,1,1,2,3,5,8,13...]
 
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
@@ -30,7 +33,7 @@ zipWith f (x:xs) (y:ys) = f x y : zipWith f xs ys
 -- => [5, 7, 9]
 
 
--- b) implemtenieren sie unzipWith :: (a -> (b, c)) -> [a] -> ([b], [c])
+-- b) implementieren sie unzipWith :: (a -> (b, c)) -> [a] -> ([b], [c])
 --
 -- eine etwas ungewöhnliche Funktion, die vom Typ nicht offensichtlich ableitbar ist
 -- Die Idee war auf jedes Element aus der [a] Liste die Funktion anzuwenden und dann
@@ -61,7 +64,8 @@ unzipWith'' f l = go l ([], [])
 --
 unzipWith''' :: (a -> (b, c)) -> [a] -> ([b], [c])
 unzipWith''' f l = foldr g ([], []) l
-    where g e (xs, ys) = ((fst (f e)) : xs, (snd (f e)) : ys)
+    where
+       g e (xs, ys) = ((fst (f e)) : xs, (snd (f e)) : ys)
 
 unzipWith'''' :: (a -> (b, c)) -> [a] -> ([b], [c])
 unzipWith'''' f l = foldr g ([], []) l
