@@ -79,6 +79,29 @@ isBinarySearch (K v left L    ) = v > maxV left  && isBinarySearch left
 isBinarySearch (K v left right) = v > maxV left  && isBinarySearch left
                                && v < minV right && isBinarySearch right
 
+-- Wieso funktioniert diese Art von Überprüfung?
+
+-- Für die binäre Suchbaumeigenschaft müssen wir überprüfen:
+
+--    Für jeden Knoten mit Wert 'v' gilt:
+
+--        v > alle Werte im linken Teilbaum und
+--        v < alle Werte im rechten Teilbaum
+
+-- Wenn wir jetzt wirklich gegen alle Werte pro Knoten vergleichen würde, ist es ein unnötiger Mehraufwand.
+-- Was ist wenn wir nun aber folgendes überprüfen:
+
+--    Ist v > als der größte Wert im linken Teilbaum?
+
+-- Wenn das stimmt, ist v automatisch auch größer als alle anderen Elemente.
+
+-- Ist v < als der kleinste Wert im rechten Teilbaum?
+-- 
+-- Wenn das stimmt, ist v automatisch auch kleiner als alle anderen Element.
+-- Und dadurch können wir uns den Vergleich mit allen Elementen spraen und überprüfen die binäre Suchbaumeigenschaft.
+
+
+
 -- alternative Lösung - wir sammeln die Werte in den Knoten auf und schauen ob die rauskommende Liste soritiert ist:
 --
 toList :: Ord a => BB a -> [a]
