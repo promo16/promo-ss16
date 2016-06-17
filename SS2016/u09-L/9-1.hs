@@ -57,13 +57,13 @@ toBB l = go (sort l)
 
 -- b) implementieren sie eine Funktion 'isBinarySearch :: Ord a => BB a -> Bool'. Diese überprüft die Sucheigenschaft des Baums
 
--- partielle Funktion die für 'L' nicht definiert ist, gibt uns immer das kleinste Element eines Baums zurück
+-- partielle Funktion die für 'L' nicht definiert ist, gibt uns immer das linkste Element eines Baums zurück (was das kleinste sein sollte)
 --
 minV :: Ord a => BB a -> a
 minV (K v L _) = v
 minV (K _ l _) = minV l
 
--- partielle Funktion die für 'L' nicht definiert ist, gibt uns immer das größte Element eines Baums zurück
+-- partielle Funktion die für 'L' nicht definiert ist, gibt uns immer das rechteste Element eines Baums zurück (was das größte sein sollte)
 --
 maxV :: Ord a => BB a -> a
 maxV (K v _ L) = v
@@ -111,7 +111,7 @@ toList (K v left right) = toList left ++ v : toList right
 isSorted :: Ord a => [a] -> Bool
 isSorted []       = True
 isSorted [x]      = True
-isSorted (x:y:ys) = x < y && isSorted ys
+isSorted (x:y:ys) = x < y && isSorted (y:ys)
 
 isBinarySearch' :: Ord a => BB a -> Bool
 isBinarySearch' tree = (isSorted . toList) tree
