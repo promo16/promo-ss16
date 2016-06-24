@@ -23,7 +23,7 @@ class Functor f where
 
 -- Wenn man Instanzen von dieser Typklasse schreibt sollte man folgende Regeln beachten:
 
--- 1) fmap id x = id x
+-- 1) fmap id x = x
 
 -- *) Wenn man die Identitätsfunktion auf irgendeinen Container 'f' anwendet, dann sollte er unverändert zurückgegeben werden
 -- *) Beispiele:
@@ -62,7 +62,6 @@ instance Functor List where
     fmap _  End           = End
     fmap f (Element x xs) = Element (f x) (fmap f xs)
 
-
 -- b) Schreiben sie eine Show und Eq Instanz für diese Liste
 
 instance Show a => Show (List a) where
@@ -81,7 +80,6 @@ instance Eq a => Eq (List a) where
 
 -- c) Implementieren sie eine Function 'scale :: (Functor f, Num b) => b -> f b -> f b'
 
-
 scale :: (Functor f, Num b) => b -> f b -> f b
 scale  factor container = fmap (*factor) container
 
@@ -91,7 +89,6 @@ scale' factor container = fmap (\x -> x * factor) container
 -- λ> scale 4 $ toList [1,2,3,4,5]
 -- 4:8:12:16:20:[]
 -- it :: (Num b) => List b
-
 
 -- d) Implementieren sie die Applicative Instanz für 'List'
 
@@ -109,7 +106,6 @@ class Functor f => Applicative f where
     pure :: a -> f a
 
     (<*>) :: f (a -> b) -> f a -> f b
-
 -}
 
 
@@ -126,8 +122,16 @@ class Functor f => Applicative f where
 -- Das macht es etwas einfacher zu verstehen, was passiert - wir entpacken die Funktionen, dann entpacken wir die Werte
 -- und wenden die Funktionen auf die Werte nach der Reihenfolge an. Am Schluss verpacken wir es wieder in den Container
 
+-- Wenn ihr das Blatt 11 bereits angeschaut habt, können wir die Implementierung von (<*>) folgendermaßen (für z.B. Maybe) hinschreiben:
+
+--     (<*>) verpackteFunktion verpackterWert = do
+--             (funktion :: a -> b) <- verpackteFunktion :: Maybe (a -> b)
+--             (wert :: a)          <- verpackterWert    :: Maybe a 
+--             let result = funktion wert :: b
+--             (pure result) :: Maybe b
+
 -- *) Just (\x -> x + 1)             <*> Just 4   => Just 5
--- *) [(\x -> x + 1), (\y -> y + 2)] <*> [2, 5]   => [3, 7]
+-- *) [(\x -> x + 1), (\y -> y + 2)] <*> [2, 5]   => [3, 6, 4, 8]
 
 instance Applicative List where
 
@@ -148,7 +152,7 @@ instance Applicative List where
 -- Für Aufmerksame - diese Implementierung folgt einer der Regeln für Applicative nicht - welcher?
 
 lzipWith :: Applicative f => (a -> b -> c) -> f a -> f b -> f c 
-lzipWith f xs ys = (fmap f xs) <*> ys
+lzipWith f xs ys = (fmap f xs) <*> ys   
 
 -- Was passiert hier?
 
@@ -172,7 +176,7 @@ lzipWith f xs ys = (fmap f xs) <*> ys
 
 -- Beispiel:
 
---     lzipWith (+) (Element 1 (Element 2 End)) (Element 4 (Element 5 End))
+-- lzipWith (+) (Element 1 (Element 2 End)) <*> (Element 4 (Element 5 End))
 
 -- => fmap (+) (Element 1 (Element 2 End)) <*> (Element 4 (Element 5 End))
       -----------------------------------
@@ -194,7 +198,7 @@ lzipWith f xs ys = (fmap f xs) <*> ys
 -- => Element 5 (Element 7 End)
 
 -- Beispiel:
-
+    
 --    Just (\x -> x + 5) <*> Just 4
 -- => Just ((\x -> x + 5) 4)
 -- => Just (4 + 5)
@@ -230,9 +234,12 @@ u8 = pure 5    :: [Int]
 
 u9 = pure True :: Maybe Bool
 
+
 u10 = Just (\x -> x `mod` 2 == 0) <*> Just 4
 
+
 u11 = Just odd <*> Just 4
+
 
 u12 = [f,g] <*> [1,2,3]
     where f x = x - 1
@@ -250,12 +257,11 @@ u16 = fmap (++) (pure []) <*> Just "world"
 
 u17 x = pure (.) <*> Just (\x -> x + 1) <*> Just (\y -> y * 2) <*> x    -- was ist das Ergebnis vom Ausdruck 'u17 (Just 4)'
 
-
+{-
 -- zur Erinnerung, ein paar Instanzen die wir hier benutzen (sollte man wahrscheinlich nicht auswendig wissen, aber bereits mal gesehen haben)
 --
 -- zu jeder Instanz ist die Herleitung der Typen hingeschrieben - diese sollte man lediglich nachvollziehen können
 --
-{-
 
 instance Functor Maybe where
 

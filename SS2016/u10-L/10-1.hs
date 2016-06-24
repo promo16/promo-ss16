@@ -9,6 +9,7 @@
 
 -- Definition der Typklasse in Haskell:
 
+
 {-
 
 class Monoid a where
@@ -42,6 +43,8 @@ class Monoid a where
 -- und die Assoziativität der Funktion erlaubt uns effizientere Algorithmen zu entwickeln, die in undefinierter Reihenfolge
 -- arbeiten können, weil diese eben egal ist
 
+import Data.Monoid
+
 -- Wer zu faul ist die ganze Zeit `mappend` zu schreiben, kann die äquivalente Funktion '<>' (aus Data.Monoid) benutzen:
 --
 --   *) "hallo" <> " " <> "welt!" => "hallo welt!"
@@ -58,6 +61,31 @@ instance Monoid CharacterChain where
 
 --  mappend :: CharacterChain -> CharacterChain -> CharacterChain
     mappend (CharacterChain xs) (CharacterChain ys) = CharacterChain (xs ++ ys)
+
+
+-- Wer an dieser Stelle eine einfach verlinkte Liste mit Chars definiert sieht sich gezwungen den (++) Operator bzw. mappend
+-- per Hand zu definieren. Da wir das aber komischerweise noch nie gemacht haben, würde ich das üben :)
+
+data LL = Node Char LL
+        | Empty
+    deriving Show
+
+instance Monoid LL where
+
+--  mempty :: LL
+    mempty = Empty
+
+--  mappend :: LL -> LL -> LL
+    mappend node          Empty = node
+    mappend Empty          node = node
+    mappend (Node c1 next) node = Node c1 (next `mappend` node)
+
+--  Die Definition ist eigentlich nur abgekupfert von der Definition von (++) für Listen:
+
+myAppend :: [a] -> [a] -> [a]
+myAppend l      [] = l
+myAppend []     l  = l
+myAppend (x:xs) l  = x : (xs `myAppend` l)
 
 
 -- b) implementieren sie den Datentyp ComplexNumber mit passender String-Darstellung
@@ -87,6 +115,7 @@ instance Show ComplexNumber where
 
 data RGB = RGB (Int, Int, Int)
 
+
 instance Monoid RGB where
 
 --  mempty :: RGB
@@ -103,4 +132,3 @@ instance Monoid RGB where
 --
 -- A: Nein, da die Subtraktion nicht assoziativ ist
 --    Gegenbeispiel:  (1 - 2) - 3 = -4 /= 2 = 1 - (2 - 3)
-
