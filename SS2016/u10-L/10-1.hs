@@ -42,7 +42,9 @@ class Monoid a where
 -- und die Assoziativität der Funktion erlaubt uns effizientere Algorithmen zu entwickeln, die in undefinierter Reihenfolge
 -- arbeiten können, weil diese eben egal ist
 
-
+-- Wer zu faul ist die ganze Zeit `mappend` zu schreiben, kann die äquivalente Funktion '<>' (aus Data.Monoid) benutzen:
+--
+--   *) "hallo" <> " " <> "welt!" => "hallo welt!"
 
 -- a) implementieren sie den Datentyp CharacterChain der Strings darstellt
 

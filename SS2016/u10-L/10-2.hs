@@ -399,12 +399,12 @@ u11 :: Maybe Bool
 u11 = Just odd <*> Just 4                        => Just False
 
 u12 :: Num a => [a]
-u12 = [f,g] <*> [1,2,3]                          => [f 1, g 2] => [0, 4]
+u12 = [f,g] <*> [1,2,3]                          => [f 1, f 2, f 3, g 1, g 2, g 3] => [0,1,2,2,4,6]
     where f x = x - 1
           g x = x * 2
 
 u13 :: Num a => [a]
-u13 = [f,g,id] <*> [1,2,3]                       => [f 1, g 2, id 3] => [0, 4, 3]
+u13 = [f,g,id] <*> [1,2,3]                       => [f 1, f 2, f 3, g 1, g 2, g 3, id 1, id 2, id 3] => [0,1,2,2,4,6,1,2,3]
     where f x = x - 1
           g x = x * 2
 
