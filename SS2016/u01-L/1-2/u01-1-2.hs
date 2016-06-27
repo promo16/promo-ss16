@@ -117,7 +117,7 @@ a = 'a'
 
 
 -- l)
-bc = "bc"
+bc = "c"
 -- F: String oder [Char]
 -- G: String oder [Char]
 
