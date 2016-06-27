@@ -23,7 +23,7 @@ instance Applicative Retrievable where
 
 --  (<*>) :: Retrievable (a -> b) -> Retrievable a -> Retrievable b
     Present f <*> Present x = Present (f x)
---  Present f <*> mx        = fmap f mx         (analog zur Zeile 26)
+--  Present f <*> mx        = fmap f mx         (analog zur Zeile 25)
     _         <*> _         = NotAvailable
 
 instance Monad Retrievable where
@@ -345,7 +345,7 @@ instance Monad (MalSchauen c) where
 -- > Nagut 1 :: MalSchauen Int (Maybe Int)
 -- > Nagut 1 :: MalSchauen Int (MalSchauen Int Int)
 
--- Deswegen typechecken die Zeilen 223,224 und 233.
+-- Deswegen typechecken die Zeilen 307,316,317 und 326.
 
 -- Ich habe dieses Beispiel lediglich deswegen reingepackt, weil wir in der letzten Vorlesung 'Either' behandelt haben.
 -- Es ist aber eher unwahrscheinlich, dass so eine schwierige Aufgabe drankommt.
