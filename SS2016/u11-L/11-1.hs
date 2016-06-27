@@ -455,8 +455,9 @@ u07' = do
     _ <- print 5     -- 'print 5' wäre hier auch ok
     putStrLn "Hello"
 
--- => 5
---    Hello
+--    5       (lediglich Seiteneffekte)
+--    Hello   (lediglich Seiteneffekte)
+-- => ()      (Rückgabewert)
 
 -- Erklärung: Wenn wir ein Ergebnis einer Funktion wegschmeißen, können wir uns einfach den '<-'-Pfeil sparen
 
@@ -475,10 +476,11 @@ u09' = do
     x <- print (1,2)
     print x
 
--- => (1,2)
---    ()
+--    (1,2) (Seiteneffekte)
+--    ()    (Seiteneffekte)
+-- => ()    (Rückgabewert)
 
--- Erklärung: Der 'void'-Type () hat einen einzelnen Wert - nämlich '()'. Den kann man sich natürlich auch ausgeben lassen.
+-- Erklärung: Der 'void'-Typ () hat einen einzelnen Wert - nämlich '()'. Den kann man sich natürlich auch ausgeben lassen.
 
 
 -- u10 = getLine >>= \str -> (return . filter (/= 'a')) str         -- Beispieleingabe: "abccda"
@@ -554,6 +556,8 @@ u14' =
     getLine >>= \str2 ->                       -- Beispieleingabe: "def"
     return (str1 ++ str2)
 
+-- => "abcdef"
+
 -- Erklärung: Hier kann man gut erkennen, dass der Zustand der ersten Funktionen auch in den nachfolgenden sichtbar ist
 --            (str1 kann nach mehreren >>= benutzt werden)
 -- 
@@ -607,20 +611,20 @@ u17' = [1,2] >>= \x -> return (x + x)  -- zur Erinnerung (>>=) für Listen ist f
 --            in 'y <- f x' wieder das Ergebnis entpacken.
 -- 
 --   [1,2] >>= \z -> return (z + z)                 -- x nach z umbenannt
---   [y | x <- [1,2], y <- (\z -> return (z+z)) x]
+--   [y | x <- [1,2], y <- (\z -> return (z+z)) x]  -- für x die '1' einsetzen
 --                    y <- return 1+1
 --                    y <- [1+1]
 --                    y <- [2]
 --                    2
 
 --   [2] ++ [y | x <- [2], y <- (\z -> return (z+z)) x]
---                              y <- return 2+2
+--                              y <- return 2+2    -- für x die '2' einsetzen
 --                              y <- [2+2]
 --                              y <- [4]
 --                              4
 
 --    [2] ++ [4] ++ [y | x <- [], y <- (\z -> return (z+z)) x]
---    [2] ++ [4] ++ []
+--    [2] ++ [4] ++ []                              -- nichts mehr zum einsetzen
 --    [2,4]
 
 
@@ -650,9 +654,10 @@ u18' = (*2) <$> [1,2] >>= \x -> [1,2] >>= \y -> return (x + y)
 -- zeigt das sehr schön auf. 
 
 -- u18 = do
---     x <- (*2) <$> [1,2]      -- für jedes x in dieser Liste wird Z.582 ausgeführt mit den jeweiligen Abhängigkeiten
---     y <- [1,2]               -- für jedes y in dieser Liste wird Z.582 ausgeführt
---     return (x + y)           -- nun einfach jeder mit jedem -> (1*2) + 1, (1*2) + 2 und (2*2) + 1, (2*2) + 2
+--     x <- (*2) <$> [1,2]      -- für jedes x in dieser Liste werden alle folgenden Zeilen ausgeführt
+--     y <- [1,2]               -- für jedes y in dieser Liste werden alle folgenden Zeilen ausgeführt
+--     return (x + y)           -- da wir nun addieren, addieren wir jedes x mit jedem y und fassen es in eine Liste zusammen
+                                -- nun einfach jeder mit jedem -> (1*2) + 1, (1*2) + 2 und (2*2) + 1, (2*2) + 2
 --                                                                  |     |    |     |       |     |    |     |
 --                                                                x[0]   y[0] x[0]  y[1]   x[1]   y[0] x[1]  y[1]
 
