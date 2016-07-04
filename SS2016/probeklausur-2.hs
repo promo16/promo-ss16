@@ -194,8 +194,8 @@ data Zahl a = Z a
 -- plus :: ..... a => Zahl a ......
 -- plus .....   ..... = Z (x1 + x2)
 
--- Schwer zu verstehen, weil nur ein von zwei Argument gegeben wurde. Das einzigste was man hier erkennen kann ist dass von irgendeiner Typklasse
--- eingeschränkt wird, dass 'x1' und 'x2' vom gleichen Typ sind und dass wir eine Zahl zurückgeben.
+-- Schwer zu verstehen, weil nur eines von zwei Argumenten gegeben wurde. Das einzigste was man hier erkennen kann ist dass 'a'
+-- von irgendeiner Typklasse eingeschränkt wird, dass 'x1' und 'x2' vom gleichen Typ sind und dass wir eine Zahl zurückgeben.
 
 -- plus :: (... a, Num b) => Zahl a -> .... -> Zahl b
 -- plus .....   ..... = Z (x1 + x2)
@@ -303,10 +303,12 @@ divison'' mx my       = fmap div mx <*> my
 
 -- In der Musterlösung ist entweder das 'Just' bzw. das 'return' zuviel. Eins davon muss gestrichen werden.
 
--- Ich zähle insgesamt 5 (Denk-)Fehler (ohne Folgefehler):
+-- Ich zähle insgesamt 6 (Denk-)Fehler (ohne Folgefehler):
 
 -- 2.3b) [String] als Autoren, obwohl sie vorher bereits als Liste mit einem eigenen Typ definiert wurden
--- 2.4) Hier wurde die Klasse ohne Typvariable definiert und die Funktion mit dem Namen der Klasse, statt mit der Typvariable
+-- 2.3c & d) Klammern um die Argumente vergessen
+-- 2.4) Hier wurde die Klasse ohne Typvariable definiert und die Funktion mit dem Namen der Klasse, statt mit der Typvariable,
+--      es ist auch nicht verständlich was zurückgegeben werden sollte (was fast schlimmer ist)
 -- 3.1) Nicht definiert was der Konstruktor 'Z' als Argument bekommt, was sich extrem auf die gesamte Aufgabe auswirkt
 -- 3.2) Diese Aufgabe ist völlig frei lösbar, weil die Einschränkungen praktisch alles erlauben
 -- 4.2) 'return' / 'Just' zuviel
