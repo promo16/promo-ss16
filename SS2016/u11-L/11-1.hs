@@ -23,7 +23,7 @@ import Data.Char (toUpper)
 
 class Applicative m => Monad m where
 
-    return :: m a
+    return :: a -> m a
 
     (>>=) :: m a -> (a -> m b) -> m b
 
@@ -59,18 +59,21 @@ class Applicative m => Monad m where
 --           dann so aus:   x >>= f
 --
 --   **) Beispiele:
---
---      ***) (Just 4) >>= (\x -> Just (x + 1))   => Just 5
---      ***) Nothing  >>= (\x -> Just (x + 1))   => Nothing
---      ***) [4]      >>= (\x -> [x + 1])        => [5]
---      ***) [4,5]    >>= (\x -> [x + 1])        => [5,6]
 
+--            Maybe Int -> (Int -> Maybe Int)
+--      ***) (Just 4) >>= (\x -> Just (x + 1))   => Just 5
+--
+--            Maybe Int -> (Int -> Maybe Int)
+--      ***) Nothing  >>= (\x -> Just (x + 1))   => Nothing
+
+--           [Int]    ->  (Int -> [Int])
+--      ***) [4]      >>= (\x -> [x + 1])        => [5]
+--      ***) [4,5]    >>= (\x -> [x + 1])        => [[5], [6]]
 
 -- Diese müssen wieder die gleichen Regeln befolgen wie (<*>) aus Applicative: (für andere schöne Beispiele - https://wiki.haskell.org/Monad_laws)
 --
 -- Es muss gelten:
---
---    1) return a >>= f       == f a      (Linksneutral)
+--    1) return a >>= f a       == f a      (Linksneutral)
 --       *) Das bedeutet, wenn ich ein Wert in einen Container lifte und wieder raushole muss das gleiche rauskommen wie am Anfang
 --       *) Die Funktionsapplikation kann man für das Verständnis mit 'return . id' wegabstrahieren:
 
@@ -101,7 +104,7 @@ class Applicative m => Monad m where
 --                                  return 4       (Wir verpacken 4 und wissen dass wir in der Maybe-Monade sind - es kommt 'Just 4' raus)
 --                                    Just 4
 
---    3) (m >>= f) >>= g == m >>= (\x -> f x >>= g)  (Assoziativität)
+--    3) (m >>= f) >>= g    ==     m >>= (\x -> f x >>= g)  (Assoziativität)
 -- 
 --       *) Man kann hier leider nicht folgendes hinschreiben,
 --
@@ -116,7 +119,7 @@ class Applicative m => Monad m where
 
 --          let f = \y -> Just (y + 1)  :: Num a        => a -> Maybe a
 --          let g = \z -> Just (z / 2)  :: Fractional a => a -> Maybe a
---
+
 --          ((Just 4) >>= f                 ) >>= g                     -- ('f' einsetzen)
 --       => ((Just 4) >>= \y -> Just (y + 1)) >>= g                     -- (Wir entpacken 'Just 4', es kommt '4' raus)
 --       =>                     Just (4 + 1)) >>= g 
@@ -151,7 +154,6 @@ class Applicative m => Monad m where
 -- Kommen wir nun aber zu der Hausaufgabe - hier sollte man mithilfe der Maybe Monade Funktionen erstellen,
 -- die ein Bankkonto verwalten können.
 
-
 -- a) definieren sie ein Typsynonym 'Money' - Int, 'Balance' - (Money, Money)
 
 type Money   = Int
@@ -172,8 +174,8 @@ withdraw money (debit, credit)
 
 deposit :: Money -> Balance -> Maybe Balance
 deposit money (debit, credit)
-    | money >= 0    = Just (debit, credit + money)
-    | otherwise = Nothing
+    | money >= 0 = Just (debit, credit + money)
+    | otherwise  = Nothing
 
 
 -- c) banktag simulieren
@@ -242,7 +244,6 @@ day2' = let s0 = (0,0) in
     deposit     19  s3 >>= \s4 ->
     withdraw  (-80) s4               -- hier brauchen wir eigentlich kein (>>=) und 'return',
                                      -- weil 'withdraw' uns bereits einen Maybe Balance Wert liefert
-
 
 -- Es geht aber noch kürzer - das automatische Einfügen von Argumenten, wenn sie in der richtigen Reihenfolge kommen
 -- erlaubt uns s[0-5] nicht mehr zu schreiben (wer es genauer wissen will - das heißt point free style, manchmal auch pointless...)

@@ -23,7 +23,7 @@ instance Applicative Retrievable where
 
 --  (<*>) :: Retrievable (a -> b) -> Retrievable a -> Retrievable b
     Present f <*> Present x = Present (f x)
---  Present f <*> mx        = fmap f mx         (analog zur Zeile 25)
+--    Present f <*> mx        = fmap f mx         (analog zur Zeile 28)
     _         <*> _         = NotAvailable
 
 instance Monad Retrievable where
@@ -67,7 +67,7 @@ instance Applicative Vielleicht where
 
 --  oder analog
 
---  (<*>) :: Vielleicht (a -> b) -> Vielleicht a -> Vielleicht b
+--  (<*>) :: Vielleicht (a -> b) -> Vielleicht a-> Vielleicht b
 --    mf <*> mx = do
 --        f <- mf
 --        fmap f mx
@@ -83,7 +83,6 @@ instance Functor Vielleicht where
 
 --  fmap :: (a -> b) -> Vielleicht a -> Vielleicht b
 --    fmap f mx = pure f <*> mx
-
 
 
 -- Weitere Erklärungen und Beispiele zu Monaden / Applicative / Functor sind in 10-2 und 11-1
