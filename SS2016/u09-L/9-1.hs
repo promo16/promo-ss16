@@ -322,7 +322,7 @@ postfixTraverse tree = traverse [] (\value left right ->         left ++        
 
 -- => [1,2,3,4]
 
--- Wer sich die Beispielauswertung von 'foldr' in 8-2 anschaut wird ein paar Ähnlichnkeiten feststellen.
+-- Wer sich die Beispielauswertung von 'foldr' in 8-2 anschaut wird ein paar Ähnlichkeiten feststellen.
 -- Wir schieben den Akkumulator immer mit und werten praktisch "von hinten" aus.
 
 -- Der einzigste Unterschied ist dass die Funktion die wir akzeptieren 3 Argumente nimmt und nicht 2, wie bei foldr.
