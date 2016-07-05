@@ -121,13 +121,13 @@ data Buch'   = B' String [Autoren]
 -- (alternative Lösung, die d) automatisch löst, weil bTitel = buchTitel)
 data Buch''  = B'' { buchTitel :: String, buchAutoren :: Maybe Autoren }
 
--- Warum ist 'data Buch = B [String] String' falsch?
+-- Warum ist 'data Buch = B [String] String' semi-optimal (nicht indiomatisches Haskell)?
 
 -- tl;dr - Doppelt gemoppelte Liste ist unnötig, Maybe eignet sich viel besser dafür
 --
 -- Weil wir vor ungefähr 15 Zeilen Autoren definiert haben und nun fassen wir sie als normale Strings auf,
--- was ungefähr null Sinn macht. Vorallem wenn wir sie eine rekursiv definierte Liste darstellen,
--- aber nun packen wir nochmal eine Liste drumrum, die total unnötig ist.
+-- was nicht konsistent ist. Vorallem wenn wir sie eine rekursiv definierte Liste darstellen,
+-- aber nun packen wir nochmal eine Liste drumrum, die unnötig ist.
 
 -- Eine viel bessere Lösung wäre das als 'Maybe Autoren' darzustellen, dass den Fall von 'kein Autor' abfängt, und 'Autoren'
 -- dafür verantwortlich sind einen oder mehr Autoren zu definieren. 
@@ -160,7 +160,7 @@ class Dok a where
 -- Zum einen wurde hier die Typvariable 'a' vergessen. In der Klassendefinition sowie in der Funktion.
 
 -- Hier stellt sich die Frage was man machen soll? Man kann nur den Titel zurückgeben, nur die Autoren konkatiniert,
--- beides zusammen oder auch nichts davon? Extrem schlecht formuliert.
+-- beides zusammen oder auch nichts davon?
 
 -- Anscheinend war hier der Titel gefragt und dadurch können wir die Funktionen von der 3) benutzen.
 
@@ -181,7 +181,7 @@ instance Dok Buch where
 
 -- 1) Geben sie die Definition eines neuen Typs Zahl a, wobei a eine Typvariable ist, mit einem einzigen Konstruktor Z der Stelligkeit 1
 
--- Tja, was ist nun Stelligkeit? Gemeint ist damit wohl, dass der Konstruktor Z genau ein Argument nimmt. Aber was für einen?
+-- Was ist nun Stelligkeit? Gemeint ist damit wohl, dass der Konstruktor Z genau ein Argument nimmt. Aber was für einen?
 -- Keiner hindert mich daran sowas zu schreiben "data Zahl a = Z Int"...
 
 -- Es war wohl gedacht, dass 'Zahl' genau diesen Typ 'a' als erste Argument nimmt.
@@ -302,15 +302,3 @@ divison'' mx (Just 0) = Nothing
 divison'' mx my       = fmap div mx <*> my
 
 -- In der Musterlösung ist entweder das 'Just' bzw. das 'return' zuviel. Eins davon muss gestrichen werden.
-
--- Ich zähle insgesamt 6 (Denk-)Fehler (ohne Folgefehler):
-
--- 2.3b) [String] als Autoren, obwohl sie vorher bereits als Liste mit einem eigenen Typ definiert wurden
--- 2.3c & d) Klammern um die Argumente vergessen
--- 2.4) Hier wurde die Klasse ohne Typvariable definiert und die Funktion mit dem Namen der Klasse, statt mit der Typvariable,
---      es ist auch nicht verständlich was zurückgegeben werden sollte (was fast schlimmer ist)
--- 3.1) Nicht definiert was der Konstruktor 'Z' als Argument bekommt, was sich extrem auf die gesamte Aufgabe auswirkt
--- 3.2) Diese Aufgabe ist völlig frei lösbar, weil die Einschränkungen praktisch alles erlauben
--- 4.2) 'return' / 'Just' zuviel
-
--- Viel Spaß bei der Klausur!
