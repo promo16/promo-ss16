@@ -139,13 +139,13 @@ data Buch'   = B' String [Autoren]
 -- (alternative Lösung, die d) automatisch löst, weil bTitel = buchTitel)
 data Buch''  = B'' { buchTitel :: String, buchAutoren :: Maybe Autoren }
 
--- Warum ist 'data Buch = B [String] String' falsch?
+-- Warum ist 'data Buch = B [String] String' semi-optimal (nicht indiomatisches Haskell)?
 
 -- tl;dr - Doppelt gemoppelte Liste ist unnötig, Maybe eignet sich viel besser dafür
 --
 -- Weil wir vor ungefähr 15 Zeilen Autoren definiert haben und nun fassen wir sie als normale Strings auf,
--- was ungefähr null Sinn macht. Vorallem wenn wir sie eine rekursiv definierte Liste darstellen,
--- aber nun packen wir nochmal eine Liste drumrum, die total unnötig ist.
+-- was nicht konsistent ist. Vorallem wenn wir sie eine rekursiv definierte Liste darstellen,
+-- aber nun packen wir nochmal eine Liste drumrum, die unnötig ist.
 
 -- Eine viel bessere Lösung wäre das als 'Maybe Autoren' darzustellen, dass den Fall von 'kein Autor' abfängt, und 'Autoren'
 -- dafür verantwortlich sind einen oder mehr Autoren zu definieren. 
@@ -178,7 +178,7 @@ class Dok a where
 -- Zum einen wurde hier die Typvariable 'a' vergessen. In der Klassendefinition sowie in der Funktion.
 
 -- Hier stellt sich die Frage was man machen soll? Man kann nur den Titel zurückgeben, nur die Autoren konkatiniert,
--- beides zusammen oder auch nichts davon? Extrem schlecht formuliert.
+-- beides zusammen oder auch nichts davon?
 
 -- Anscheinend war hier der Titel gefragt und dadurch können wir die Funktionen von der 3) benutzen.
 
@@ -199,7 +199,7 @@ instance Dok Buch where
 
 -- 1) Geben sie die Definition eines neuen Typs Zahl a, wobei a eine Typvariable ist, mit einem einzigen Konstruktor Z der Stelligkeit 1
 
--- Tja, was ist nun Stelligkeit? Gemeint ist damit wohl, dass der Konstruktor Z genau ein Argument nimmt. Aber was für einen?
+-- Was ist nun Stelligkeit? Gemeint ist damit wohl, dass der Konstruktor Z genau ein Argument nimmt. Aber was für einen?
 -- Keiner hindert mich daran sowas zu schreiben "data Zahl a = Z Int"...
 
 -- Es war wohl gedacht, dass 'Zahl' genau diesen Typ 'a' als erste Argument nimmt.
