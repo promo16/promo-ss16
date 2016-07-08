@@ -4,6 +4,8 @@ module Bank (
   , accountState
   ) where
 
+import Data.List (sort)
+
 -- 12-1 b) ^
 
 -- | Funktionale Fehlerbehandlung und Module
@@ -16,7 +18,7 @@ module Bank (
 
 {-
 
-data Either a b = Left a
+data Either a b = Left  a
                 | Right b
 
 -}
@@ -43,7 +45,7 @@ safeDivision x y = Right (x `div` y)
 --    *) Einzahlungen dürfen nur positiv sein
 --    *) Auszahlungen dürfen nur negativ sein
 --    *) Auszahlungen dürfen maximal 1000€ auf einmal betragen
---    *) Kredit dürfen maximal 1000€ betragen
+--    *) Kredit darf maximal 1000€ betragen
 
 type Money   = Int
 type Balance = (Money, Money)

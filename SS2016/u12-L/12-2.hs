@@ -26,6 +26,14 @@ readUserFile = do
         Left err      -> print err >> readUserFile
         Right content -> return content
 
+--readUserFile' :: IO String
+--readUserFile' = do
+--    putStrLn "Validen Pfad zu einem Textfile angeben"
+--    path   <- getLine
+--    exists <- doesFileExist path
+--    if exists
+--        then readFile path
+--        else putStrLn "File does not exist" >> readUserFile'
 
 -- | b) schreiben sie eine Funktion 'readMaybe :: String -> Maybe Int' mithilfe von 'reads'
 
@@ -49,7 +57,7 @@ readMaybe str =
 returnIndex :: [String] -> IO ()
 returnIndex content = do
     putStrLn "Index der Liste eingeben"
-    mint <- readMaybe <$> getLine
+    mint <- fmap readMaybe getLine
     case mint of 
         Just index -> putStrLn (content !! index)
         Nothing    -> putStrLn "Zahl nicht erkannt" >> returnIndex content
@@ -101,9 +109,9 @@ returnSafeIndexM content = do
     mint <- readMaybe <$> getLine
     case mint of 
         Just index -> do
-            unless (index >= 0 && index < length content) $ do
+            unless (index >= 0 && index < length content) (do
                 putStrLn "Index out of bounds"
-                returnSafeIndexM content
+                returnSafeIndexM content)
             putStrLn (content !! index)
         Nothing    -> putStrLn "Zahl nicht erkannt" >> returnSafeIndexM content
 

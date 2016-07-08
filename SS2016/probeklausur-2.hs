@@ -11,9 +11,17 @@ data BB a = L
 
 b = K 1 (K 2 (K 3 L L) (K 4 L L))  (K 5 (K 6 L L) (K 7 L L))
 
+
 tief :: a -> (b -> a -> a -> a) -> BB b -> a
-tief fL fK  L                           = fL
-tief fL fK (K w linkerBaum rechterBaum) = fK w (tief fL fK linkerBaum) (tief fL fK rechterBaum)
+tief acc f  L               = acc
+tief acc f (K w left right) = f w (tief acc f left) (tief acc f right)
+
+-- Hier kann man gut das Pattern erkennen, dass es sich lediglich um ein fold-left handelt (ich hab den Akkumulator hinter die Hilfsfunktion geschoben)!
+-- Das zusätzliche Argument in der ersten Funktion kommt daher, dass Knoten zwei Kinder haben - links und rechts. Bei einer Liste haben
+-- wir aber nur einen Nachfolger.
+
+-- tief  :: (b -> a -> a -> a) -> a -> BB b -> a
+-- foldl :: (b -> a -> a)      -> a -> [b] -> a
 
 -- BB steht für Binärbaum
 -- L steht für Leer
@@ -32,7 +40,7 @@ istIn  wert baum = tief False (\w links rechts -> undefined) baum
 
 
 -- | Lösung:
-
+--
 anzahlKnoten' :: BB a -> Int
 anzahlKnoten' baum = tief 0     (\w links rechts -> 1 + links + rechts) baum
 --                                |   |     |       \________________/
@@ -51,6 +59,15 @@ istIn'  wert baum = tief False (\w links rechts -> wert == w || links || rechts)
 --                              'a'  Bool   Bool             |
 --                                                          Bool
 
+prefix :: Eq a => BB a -> [a]
+prefix baum = tief [] (\w links rechts -> [w] ++ links ++ rechts) baum
+
+infixB :: Eq a => BB a -> [a]
+infixB baum = tief [] (\w links rechts -> links ++ [w] ++ rechts) baum
+
+postfix :: Eq a => BB a -> [a]
+postfix baum = tief [] (\w links rechts -> links ++ rechts ++ [w]) baum
+
 
 -- Erklärung:
 --
@@ -62,7 +79,6 @@ istIn'  wert baum = tief False (\w links rechts -> wert == w || links || rechts)
 -- Hierzu haben wir aber bereits viel gemacht (tief ist in dem Link 'traverse' genannt und wird im Einzelnen durchgegangen):
 --      https://github.com/promo16/promo-ss16/blob/master/SS2016/u09-L/9-1.hs
 --
-
 
 -- | Aufgabe 2:
 --
@@ -88,13 +104,15 @@ data Autoren  = EA  String
 
 -- (alternative Lösung)
 data Autoren' = EA' String
-              | MA' String [Autoren]
+              | MA' String [Autoren']
 
+data Autoren'' = MA'' String Autoren''
+               | KeinAutor
 
 -- 2) Geben sie einen Wert des von Ihnen definierten Typs Autoren für die folgenden Autoren
 
-a2  = MA  "a1" (MA "a2" (EA "a3"))
-a2' = MA' "a1" [EA "a2", EA "a3"]
+a2  = MA  "a1" (MA  "a2" (EA  "a3"))
+a2' = MA' "a1" [EA' "a2", EA' "a3"]
 
 
 -- 3) Definieren sie
@@ -106,7 +124,7 @@ a2' = MA' "a1" [EA "a2", EA "a3"]
 
 -- a)
 
-data Artikel  = A String  Autoren
+data Artikel  = A String Autoren
 
 -- (alternative Lösung, die c) automatisch löst, weil aTitel = artikelTitel)
 data Artikel' = A' { artikelTitel :: String, artikelAutoren :: Autoren }
@@ -272,7 +290,6 @@ anwenden op sz1 sz2 = do
 plus' :: Maybe Int -> Maybe Int -> Maybe Int
 plus' mx my = anwenden (+) mx my
 
-
 -- 2) Definieren sie ohne anwenden einzusetzen eine zweistellige Funktion division mit Typ 'Maybe Int -> Maybe Int -> Maybe Int',
 --    sodass eine Divison mit dem Null-Element von Maybe Int den passenden Wert vom Typ 'Maybe Int' zurückgibt.
 --
@@ -301,16 +318,8 @@ divison'' :: Maybe Int -> Maybe Int -> Maybe Int
 divison'' mx (Just 0) = Nothing
 divison'' mx my       = fmap div mx <*> my
 
--- In der Musterlösung ist entweder das 'Just' bzw. das 'return' zuviel. Eins davon muss gestrichen werden.
-
--- Ich zähle insgesamt 6 (Denk-)Fehler (ohne Folgefehler):
-
--- 2.3b) [String] als Autoren, obwohl sie vorher bereits als Liste mit einem eigenen Typ definiert wurden
--- 2.3c & d) Klammern um die Argumente vergessen
--- 2.4) Hier wurde die Klasse ohne Typvariable definiert und die Funktion mit dem Namen der Klasse, statt mit der Typvariable,
---      es ist auch nicht verständlich was zurückgegeben werden sollte (was fast schlimmer ist)
--- 3.1) Nicht definiert was der Konstruktor 'Z' als Argument bekommt, was sich extrem auf die gesamte Aufgabe auswirkt
--- 3.2) Diese Aufgabe ist völlig frei lösbar, weil die Einschränkungen praktisch alles erlauben
--- 4.2) 'return' / 'Just' zuviel
-
--- Viel Spaß bei der Klausur!
+division''' :: Maybe Int -> Maybe Int -> Maybe Int
+division''' (Just x) (Just y)
+    | y == 0    = Nothing
+    | otherwise = Just (x `div` y)
+division''' _ _ = Nothing
