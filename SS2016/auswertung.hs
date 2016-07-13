@@ -72,7 +72,7 @@ fun = let a = 10
 
 -- | Aufgabe:
 --
---  Werten sie die Funktion 'fun' in applikativer, normaler Reihenfolge und verzögerter Auswertung aus:
+--  Werten sie die Funktion 'fun' in applikativer, normaler und verzögerter Reihenfolge  aus:
 --
 --
 
