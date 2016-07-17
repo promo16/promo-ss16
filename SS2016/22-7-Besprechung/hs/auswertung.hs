@@ -25,6 +25,7 @@ fun = let a = 10
 -- | Applikative Reihenfolge:
 --
 -- *) innere Ausdrücke zuerst
+-- *) soweit es geht auswerten, erst dann zum nächsten Teilterm gehen
 -- *) parallele Auswertung wenn möglich, ansonsten von links nach rechts
 
 -- | Normale Reihenfolge:
