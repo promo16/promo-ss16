@@ -1,0 +1,104 @@
+\documentclass{article}
+% \usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+\usepackage{courier}
+% \usepackage{paralist}
+% \usepackage{amsmath}
+% \usepackage{amsfonts}
+\usepackage{minted}
+
+\title{Übungen zu Rekursion - Programmierung und Modellierung 2016}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textit{Besprechung am 22.Juli 2016}
+\end{center}
+
+\section*{Aufgabe 1}
+Definieren sie folgende Funktionen:
+\begin{enumerate} [a)]
+    \item \begin{minted}{haskell}
+intersperse :: a -> [a] -> [a]
+          \end{minted}
+    Diese Funktion nimmt ein Separator, eine Liste und packt zwischen jedes Element den Seperator. Es kommt kein Separator vor das erste oder hinter das letzte Element der Liste.
+    
+    \begin{minted}{haskell}
+        > intersperse ',' "hallo"
+        "h,a,l,l,o"
+        
+        > intersperse 0 [1,2,3]
+        [1,0,2,0,3]
+        
+        > intersperse 0 [1]
+        [1]
+    \end{minted}
+
+    \item \begin{minted}{haskell}
+at :: [a] -> Int -> a
+          \end{minted}
+    Diese Funktion gibt mir das Element am jeweiligen Index der Liste zurück. \\
+    Fehlerbehandlung sind nicht nötig. \texttt{(!!)} darf nicht benutzt werden. \\
+
+    \begin{minted}{haskell}
+        > at [1,2,3] 0
+        1
+
+        > at "hallo" 4
+        'o'
+    \end{minted}
+
+\newpage
+    \item \begin{minted}{haskell}
+take :: Int -> [a] -> [a]
+          \end{minted}
+    Diese Funktion nimmt eine Zahl \texttt{n} und eine Liste \texttt{xs} und gibt den Prefix der Liste mit Länge \texttt{n} zurück
+    oder die Liste selbst, falls \texttt{n > length xs}. Fehlerbehandlung sind nicht nötig. \\
+
+    \begin{minted}{haskell}
+        > take 3 [1,2,3,4,5]
+        [1,2,3]
+       
+        > take 10 [1,2,3]
+        [1,2,3]
+       
+        > take 0 [1,2,3]
+        []
+    \end{minted}
+
+    \item \begin{minted}{haskell}
+repeat :: a -> [a]
+          \end{minted}
+    Diese Funktion nimmt ein Argument \texttt{x} und erstellt eine unendlich große Liste mit aus \texttt{x}'n
+    \begin{minted}{haskell}
+        -- Pseudobeispiel:
+        --   repeat 1 => [1,1,1,1,1...
+
+        > take 10 (repeat 1)
+        [1,1,1,1,1,1,1,1,1,1]
+
+        > take 5 (repeat 'a')
+        "aaaaa"
+
+        > take 2 (repeat [])
+        [[],[]]
+    \end{minted}
+
+    \item \begin{minted}{haskell}
+divBy3 :: [Int] -> [Int]
+          \end{minted}
+    Definieren sie mithilfe von List-Comprehentions eine Funktion die alle durch 3 teilbaren Zahlen zurückgibt.
+    \begin{minted}{haskell}
+        > divBy3 [1..10]
+        [3,6,9]
+       
+        > divBy3 [(-1),(-2)..(-10)]
+        [-3,-6,-9]
+    \end{minted}
+
+\end{enumerate}
+
+\end{document}

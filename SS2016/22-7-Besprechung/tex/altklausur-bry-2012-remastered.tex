@@ -1,0 +1,126 @@
+\documentclass{article}
+% \usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+\usepackage{courier}
+% \usepackage{paralist}
+% \usepackage{amsmath}
+% \usepackage{amsfonts}
+\usepackage{minted}
+\usepackage{mdframed}
+
+\definecolor{bg}{rgb}{0.85,0.95,0.85}
+
+\title{Altklausur Bry 2012 Remastered für Programmierung und Modellierung 2016}
+\author{Alexander Isenko}
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textit{Besprechung am 22.Juli 2016}
+\end{center}
+
+\section*{Aufgabe 1}
+Hier wird nach Funktionen gefragt die ihr euch selber einfallen lassen könnt, total egal wie kompliziert
+oder einfach sie sind, sie müssen lediglich den Bedingungen entsprechen.
+\begin{enumerate} [a)]
+    \item  Definieren sie eine monomorphe Funktion (keine Typvariablen, nur feste Typen)
+    \item Definieren sie eine polymorphe Funktion (mit Typvariablen)
+        \begin{enumerate}[i)]
+            \item parametrisch polymorph  (keine Typvariablen vor ($=>$)) \\
+            \item ad-hoc polymorph       (mid. eine Typvariable vor ($=>$)) \\
+        \end{enumerate}
+    \item  Definieren sie eine \textit{gecurriete} Funktion (eine Funktion die ein Tupel nimmt, aber mit \texttt{curry} stattdessen die Argumente hintereinander akzeptiert)
+        \begin{minted}[linenos]{haskell}
+-- Hilfestellung:
+
+   > :t curry
+   curry :: ((a, b) -> c) -> a -> b -> c
+        \end{minted}
+\end{enumerate}
+
+\newpage
+
+\section*{Aufgabe 3}
+Definieren sie die Funktion \texttt{reverse} für Listen in Haskell.
+    \begin{minted}[linenos]{haskell}
+        > :t reverse
+        [a] -> [a]
+
+        > reverse "hallo"
+        "ollah"
+        
+        > reverse [1,2,3]
+        [3,2,1]
+        
+        > reverse []
+        []
+    \end{minted}
+
+\section*{Aufgabe 4}
+Sei folgender Code gegeben, was ist das Ergebnis von \texttt{res}?
+\begin{minted}[linenos]{haskell}
+y = 5
+x = 2
+goo y     = x * y
+fuu (x,y) = x + goo y
+res = (goo y, fuu (5,7))
+\end{minted}
+
+\section*{Aufgabe 6}
+Definieren sie das Standartskalarprodukt mithilfe von \texttt{zip} und \texttt{Data.List.foldl/foldr}
+
+\begin{minted}[linenos]{haskell}
+--  Typsignatur:
+--
+skalarProdukt :: Num a => [a] -> [a] -> a
+--
+--  Beispiel:
+--
+skalarProdukt [1,2,3] [4,5,6] = 1*4 + 2*5 + 3*6 = 4 + 10 + 18 = 32
+
+-- Hilfestellung:
+--
+zip :: [a] -> [b] -> [(a,b)]
+zip []     []     = []
+zip (x:xs) (y:ys) = (x,y) : zip xs ys
+
+
+
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl f acc []     = acc
+foldl f acc (x:xs) = foldl f (f acc x) xs
+
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f acc []     = acc
+foldr f acc (x:xs) = f x (foldr f acc xs)
+\end{minted}
+
+\section*{Aufgabe 7}
+Sei folgender Code gegeben.
+\begin{minted}[linenos, escapeinside=||]{haskell}
+ks = [3,5,7]
+
+pred = ||\||x -> x < 0
+
+f p x (y:ys) = if p y
+                   then f (not . p) x ys
+                   else f p         x ys
+f p x _      = p x
+
+g x = let f x = x
+      in g (f x)
+\end{minted}
+
+Geben sie wenn möglich den Wert den Typ der folgenden Ausdrücke an:
+
+\begin{enumerate} [a)]
+    \item \texttt{f} \\[2mm]
+    \item \texttt{f pred 0 []} \\[2mm]
+    \item \texttt{f pred 0 ks} \\[2mm]
+    \item \texttt{g} \\[2mm]
+    \item \texttt{g ks} \\[2mm]
+\end{enumerate}
+\end{document}
