@@ -62,6 +62,19 @@ insert' e l  = go l False []
         go (y:ys) False acc
             | e < y     = go [] True  (acc ++ e : y : ys)
             | otherwise = go ys False (acc ++ [y])
+            
+            
+-- Endrekursive Variante Version 2: (vll etwas schöner =)
+
+insert' :: Ord a => a -> [a] -> [a]
+insert' a [] = [a]
+insert' a liste = go a liste []
+           where
+            go :: Ord a => a -> [a] -> [a] -> [a]
+            go _ [] acc = acc 
+            go a (x:xs) acc 
+                          | a <= x = go a [] (acc ++ (a:x:xs))
+                          | otherwise = go a xs (acc ++ [x])
 
 -- c) Implementieren sie eine Funktion, welche das erste Vorkommen eines Elements löscht
 
