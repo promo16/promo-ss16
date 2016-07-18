@@ -221,7 +221,7 @@ f :: (a -> Bool) -> a -> [a] -> Bool
     \begin{mdframed}[backgroundcolor=bg]
         \begin{minted}[linenos, escapeinside=||]{haskell}
 -- Da für 'f' alle Argumente befüllt sind ist der
--- Rückgabewert
+-- Typ vom Rückgabewert
 Bool
 -- Das dritte Argument ist eine leere Liste,
 -- wir kommen in den zweiten Fall von 'f', Z.8
@@ -237,7 +237,7 @@ pred 0 => 0 < 0 => False
         \begin{minted}[linenos, escapeinside=||]{haskell}
 
 -- Da für 'f' alle Argumente befüllt sind ist der
--- Rückgabewert
+-- Typ vom Rückgabewert
 Bool
 -- 2. Das dritte Argument ist keine leere Liste,
 -- wir kommen in den ersten Fall von 'f', Z.8
@@ -295,7 +295,7 @@ g :: a -> b
 ks :: Num a => [a]
 -- Da 'g' vom Typ 'a -> b' ist, setzen wir den Typ
 -- von 'ks' für das Argument ein.
-g ks :: Num a => [a] -> b
+g ks :: b
 -- Diese Funktion terminiert nicht, somit
 -- gibt es kein Ergebnis
         \end{minted}
