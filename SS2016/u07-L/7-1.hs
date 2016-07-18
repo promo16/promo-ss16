@@ -67,14 +67,14 @@ insert' e l  = go l False []
 -- Endrekursive Variante Version 2: (vll etwas schöner =)
 
 insert' :: Ord a => a -> [a] -> [a]
-insert' a [] = [a]
+insert' a []    = [a]
 insert' a liste = go a liste []
-           where
-            go :: Ord a => a -> [a] -> [a] -> [a]
-            go _ [] acc = acc 
-            go a (x:xs) acc 
-                          | a <= x = go a [] (acc ++ (a:x:xs))
-                          | otherwise = go a xs (acc ++ [x])
+    where
+        go :: Ord a => a -> [a] -> [a] -> [a]
+        go _ [] acc = acc 
+        go a (x:xs) acc 
+                | a <= x    = go a [] (acc ++ (a:x:xs))
+                | otherwise = go a xs (acc ++ [x])
 
 -- c) Implementieren sie eine Funktion, welche das erste Vorkommen eines Elements löscht
 
