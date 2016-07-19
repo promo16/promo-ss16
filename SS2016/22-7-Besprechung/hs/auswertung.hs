@@ -174,42 +174,42 @@ const_ = \x y -> x
 =>  let a = 10 in const (add1 3) (const a (7-2))        -- []
     -------------
 
-=>  const (add1 3) (const a (7-2))                      -- [(a,3)]
+=>  const (add1 3) (const a (7-2))                      -- [(a,10)]
            ------   -------------
               \         /
             Referenzen verteilen (Namen beliebig)
 
 => let b = add1 3
        c = const a (7-2)
-   in const b c                                         -- [(a,3)]
+   in const b c                                         -- [(a,10)]
 
    In die Umgebung aufnehmen
 
-=>  const b c                                           -- [(c, const a (7-2)), (b, add1 3), (a,3)]
+=>  const b c                                           -- [(c, const a (7-2)), (b, add1 3), (a,10)]
     ---------
 
-=> (\x y -> x) b c                                      -- [(c, const a (7-2)), (b, add1 3), (a,3)]
+=> (\x y -> x) b c                                      -- [(c, const a (7-2)), (b, add1 3), (a,10)]
    ---------------
 
-=> ^b                                                   -- [(c, const a (7-2)), (b, add1 3), (a,3)]
+=> ^b                                                   -- [(c, const a (7-2)), (b, add1 3), (a,10)]
    ---
       => b
       => add1 3
       => let d = 3
-         in add1 d                                      -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+         in add1 d                                      -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-      => (\x -> x + 1) d                                -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
-      => ^d + 1                                         -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+      => (\x -> x + 1) d                                -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
+      => ^d + 1                                         -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-          => d                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
-          => 3                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+          => d                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
+          => 3                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-      => 3 + 1                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+      => 3 + 1                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-      => 4                                              -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
-      =>                                                -- [(c, const a (7-2)), (b, 4), (a,3)]
+      => 4                                              -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
+      =>                                                -- [(c, const a (7-2)), (b, 4), (a,10)]
 
-=> 4                                                    -- [(c, const a (7-2)), (b, 4), (a,3)]
+=> 4                                                    -- [(c, const a (7-2)), (b, 4), (a,10)]
 =>                                                      -- []
 
 
@@ -221,41 +221,41 @@ const_ = \x y -> x
 =>  let a = 10 in const (add1 3) (const a (7-2))        -- []
     -------------
 
-=>  const (add1 3) (const a (7-2))                      -- [(a,3)]
+=>  const (add1 3) (const a (7-2))                      -- [(a,10)]
            ------   -------------
               \         /
             Referenzen verteilen (Namen beliebig)
 
 => let b = add1 3
        c = const a (7-2)
-   in const b c                                         -- [(a,3)]
+   in const b c                                         -- [(a,10)]
 
    In die Umgebung aufnehmen
 
-=>  const b c                                           -- [(c, const a (7-2)), (b, add1 3), (a,3)]
+=>  const b c                                           -- [(c, const a (7-2)), (b, add1 3), (a,10)]
     ---------
 
-=> (\x y -> x) b c                                      -- [(c, const a (7-2)), (b, add1 3), (a,3)]
+=> (\x y -> x) b c                                      -- [(c, const a (7-2)), (b, add1 3), (a,10)]
    ---------------
 
-=> ^b                                                   -- [(c, const a (7-2)), (b, add1 3), (a,3)]
+=> ^b                                                   -- [(c, const a (7-2)), (b, add1 3), (a,10)]
    ---
       => b
       => add1 3
       => let d = 3
-         in add1 d                                      -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+         in add1 d                                      -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-      => (\x -> x + 1) d                                -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
-      => ^d + 1                                         -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+      => (\x -> x + 1) d                                -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
+      => ^d + 1                                         -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-          => d                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
-          => 3                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+          => d                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
+          => 3                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-      => 3 + 1                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]
+      => 3 + 1                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 
-      => 4                                              -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]   <---\
-      =>                                                -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]   <-  - Hier wird die Umgebung einfach gelassen 
-                                                        --                                                      /
-=> 4                                                    -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,3)]   <-/
+      => 4                                              -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]   <---\
+      =>                                                -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]   <-  - Hier wird die Umgebung einfach gelassen 
+                                                        --                                                       /
+=> 4                                                    -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]   <-/
 =>                                                      -- []
 
