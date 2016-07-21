@@ -47,18 +47,18 @@ unzipWith :: (a -> (b, c)) -> [a] -> ([b], [c])
 unzipWith f l = go l ([], [])
     where go []     acc = acc
           go (x:xs) (ys, zs) = let (y, z) = f x
-                               in go xs (y:ys, z:zs)
+                               in go xs (ys ++ [y], zs ++ [z])
 
 unzipWith' :: (a -> (b, c)) -> [a] -> ([b], [c])
 unzipWith' f l = go l ([], [])
     where go []     acc = acc
-          go (x:xs) (ys, zs) = go xs (y:ys, z:zs)
+          go (x:xs) (ys, zs) = go xs (ys ++ [y], zs ++ [z])
               where (y, z) = f x
 
 unzipWith'' :: (a -> (b, c)) -> [a] -> ([b], [c])
 unzipWith'' f l = go l ([], [])
     where go []     acc = acc
-          go (x:xs) (ys, zs) = go xs ((fst (f x)):ys, ((snd (f x)):zs))
+          go (x:xs) (ys, zs) = go xs (ys ++ [(fst (f x))], (zs ++ [(snd (f x))]))
 
 -- Mit unserem neu gewonnen Wissen von folds, können wir foldr für die Definition benutzen
 --
