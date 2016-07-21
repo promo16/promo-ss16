@@ -1,0 +1,81 @@
+\documentclass{article}
+% \usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+\usepackage{courier}
+% \usepackage{paralist}
+% \usepackage{amsmath}
+% \usepackage{amsfonts}
+\usepackage{minted}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{mdframed}
+
+% compile with:
+% pdflatex -shell-escape <filepath>
+
+\definecolor{bg}{rgb}{0.85,0.95,0.85}
+
+\title{Übungen zu Ausdrücken - Programmierung und Modellierung 2016}
+\author{Alexander Isenko}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textit{Besprechung am 22.Juli 2016}
+\end{center}
+
+\section*{Aufgabe 1}
+Geben sie den \textbf{abstraktesten} Typ der folgenden Ausdrücke an. 
+\begin{enumerate} [a)]
+    \item \begin{minted}{haskell}
+f = 1
+          \end{minted}
+    \item \begin{minted}{haskell}
+f x = x + 1
+          \end{minted}
+
+    \item \begin{minted}[escapeinside=||]{haskell}
+f = \x -> x
+          \end{minted}
+    \item \begin{minted}[escapeinside=||]{haskell}
+f y = \x -> x + y
+          \end{minted}
+    \item \begin{minted}[escapeinside=||]{haskell}
+f x y = compare x y
+          \end{minted}
+    \item \begin{minted}{haskell}
+f x y z
+  | y         = 1
+  | x == z    = x * 5
+  | otherwise = z - 1
+          \end{minted}
+    \item \begin{minted}{haskell}
+f 'c' (y:ys) = []
+          \end{minted}
+    \item \begin{minted}{haskell}
+f x y = [z | z <- y, mod x z == 1]
+          \end{minted}
+    \item \begin{minted}{haskell}
+f w x y z = let fooooo x
+                  | w = z
+                  | otherwise = y
+            in fooooo 10
+          \end{minted}
+    \item \begin{minted}{haskell}
+f x y = case elem x y of
+            True  -> 0
+            False -> 1.0
+          \end{minted}
+    \item \begin{minted}{haskell}
+f x = map (/2) [1..x]
+          \end{minted}
+    \item \begin{minted}{haskell}
+f g = foldl g 0 [(-5.0), (-4.5)..(-0.5)]
+          \end{minted}
+
+\end{enumerate}
+
+\end{document}
