@@ -84,7 +84,7 @@ ioo''' = \_ -> 10
 -- # let V = ... [in] A #
 -- ######################
 
--- Wir fügen V der Umgebung hinzu und B wird mit der neuen Umgebung ausgeführt. NACHDEM B ausgewertet wurde,
+-- Wir fügen V der Umgebung hinzu und A wird mit der neuen Umgebung ausgeführt. NACHDEM A ausgewertet wurde,
 -- wird V aus der Umgebung entfernt. Ob das 'in' dasteht oder nicht, ist egal. Alles was nach dem Ende vom
 -- Ausdruck V kommt, wird mit der aktualisierten Umgebung auswertet.
 
