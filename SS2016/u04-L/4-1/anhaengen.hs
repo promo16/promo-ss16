@@ -34,7 +34,7 @@ Dafür ist folgender Schritt erst nötig:
 --
 tApp :: [a] -> [a] -> [a]
 tApp xs ys = go ys (reverse xs)
-    where go :: [a] -> [a] -> [a] -> [a]
+    where go :: [a] -> [a] -> [a]
           go ys []     = ys
           go ys (x:xs) =  go (x:ys) xs
 
