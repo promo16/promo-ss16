@@ -488,13 +488,16 @@ tiefe3 = Knoten tiefe2 3 tiefe1
 
 -- Damit wir das Ergebnis sehen, sammele ich hier die Elemente einfach auf und gebe sie zurück (Blätter fülle ich mit 0en zur Anschaulichkeit)
 
+-- ##### VERBESSERUNG ######
+-- Hier wurde zu der Funktion 'go' ein Akkumulator hinzugefügt, damit es wirklich endrekursiv ist!
+
 breadthElementsTC :: Baum Int -> [Int]
-breadthElementsTC baum = go [baum]
+breadthElementsTC baum = go [baum] []
     where
-        go :: [Baum Int] -> [Int]
-        go                             [] = []
-        go ( Blatt                   :xs) = 0 : go xs
-        go ((Knoten left value right):xs) = value : go (xs ++ [left, right])
+        go :: [Baum Int] -> [Int] -> [Int]
+        go                             [] acc = acc
+        go ( Blatt                   :xs) acc = go  xs                    acc
+        go ((Knoten left value right):xs) acc = go (xs ++ [left, right]) (acc ++ [value])
 
 -- Hier benutze ich einen Trick - ich verpacke den Baum als Liste! Dadurch gewinne ich die Möglichkeit
 -- die Teilbäume in genau der Reihenfolge an die Liste dranzuhängen wie ich will. Damit lege ich fest,
@@ -528,13 +531,17 @@ depthElements (Knoten left value right) = value : depthElements left ++ depthEle
 -- Endrekursive Definition vom Tiefendurchlauf:
 -- Man bemerke wie ähnlich er sich zu dem Breitendurchlauf ausschaut
 --
+
+-- ##### VERBESSERUNG ######
+-- Hier wurde zu der Funktion 'go' ein Akkumulator hinzugefügt, damit es wirklich endrekursiv ist!
+
 depthElementsTC :: Baum Int -> [Int]
-depthElementsTC baum = go [baum]
+depthElementsTC baum = go [baum] []
     where
-        go :: [Baum Int] -> [Int]
-        go                             [] = []
-        go ( Blatt                   :xs) = 0 : go xs
-        go ((Knoten left value right):xs) = value : go (left:right:xs)
+        go :: [Baum Int] -> [Int] -> [Int]
+        go                             [] acc = acc
+        go ( Blatt                   :xs) acc = go  xs              acc
+        go ((Knoten left value right):xs) acc = go (left:right:xs) (acc ++ [value])
 
 
 -- Mögliche Übungen:
