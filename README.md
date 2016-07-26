@@ -5,6 +5,6 @@ These are made by me personally - there could be some errors.
 
 Previous solutions can be found in SS2014 and SS2015.
 
-## Important notice
-### There will be an unofficial revision class at the 22nd of July from 16:00 - 18:00 at C123, Theresienstr.39 80333 (Mathematical institute LMU)
-### Please prepare questions/assignments and send them to alex.isenko@protonmail.com
+# Thank you for participating!
+### This is the traffic after the exam
+![Alt text](/Bildschirmfoto_2016-07-26_14-18-11.png?raw=true "Traffic after the exam")
