@@ -103,7 +103,7 @@ const_ = \x y -> x
 =>  const (add1 3) (const a (7-2))                      --   [(a,10)]
           -------           -----
             |                  |
-       innerser               innerster
+       innerster               innerster
        Ausdruck in der        Ausdruck in der
        linken Klammer         rechten Klammer
 
@@ -200,7 +200,7 @@ const_ = \x y -> x
 
       => (\x -> x + 1) d                                -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
       => ^d + 1                                         -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
-
+          -----
           => d                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
           => 3                                          -- [(d,3), (c, const a (7-2)), (b, add1 3), (a,10)]
 

@@ -1,0 +1,328 @@
+\documentclass{article}
+% \usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue
+}
+\usepackage{enumerate}
+\usepackage{courier}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{forest}
+% \usepackage{paralist}
+% \usepackage{amsmath}
+% \usepackage{amsfonts}
+\usepackage{minted}
+\usepackage{mdframed}
+
+% compile with:
+% pdflatex -shell-escape <filepath>
+
+\definecolor{bg}{rgb}{0.85,0.95,0.85}
+
+\title{Klausur: Programmierung und Modellierung Bry 2016}
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textit{Gedankenprotokoll}
+\end{center}
+
+\section*{Aufgabe 1 - Multiple Choice}
+Geben sie den allgemeinsten Typen für die folgenden Ausdrücke an:
+\begin{enumerate} [label={\alph*)}]
+    \setlength\itemsep{0.5em}
+    \item \begin{minted}{haskell}
+f x y = (3 * x :: Int, y)
+          \end{minted}
+
+    \begin{itemize}[label=$\square$]
+        \item \begin{minted}{haskell}
+Int -> Int -> (Int, Int)
+              \end{minted}
+        \item \begin{minted}{haskell}
+Int -> a -> (Int, a)
+              \end{minted}
+        \item \begin{minted}{haskell}
+(Int, Int) -> (Int, Int)
+              \end{minted}
+        \item Kein korrekter Haskell Ausdruck
+        \item Nichts davon, sondern ....................
+    \end{itemize}
+
+    \item \begin{minted}[escapeinside=||]{haskell}
+(||\||x y -> (x + y) `mod` y)
+          \end{minted}
+
+    \begin{itemize}[label=$\square$]
+        \item \begin{minted}{haskell}
+Int -> Int -> Int
+              \end{minted}
+        \item \begin{minted}{haskell}
+Integer -> Integer -> Integer
+              \end{minted}
+        \item \begin{minted}{haskell}
+Integral a => a -> a -> a
+              \end{minted}
+        \item Kein korrekter Haskell Ausdruck
+        \item Nichts davon, sondern ....................
+    \end{itemize}
+
+    \item \begin{minted}[escapeinside=||]{haskell}
+(||\||x -> (||\||y -> x ++ y))
+          \end{minted}
+
+    \begin{itemize}[label=$\square$]
+        \item \begin{minted}{haskell}
+String
+              \end{minted}
+        \item \begin{minted}{haskell}
+Char -> String
+              \end{minted}
+        \item \begin{minted}{haskell}
+[a] -> [a] -> [a]
+              \end{minted}
+        \item Kein korrekter Haskell Ausdruck
+        \item Nichts davon, sondern ....................
+    \end{itemize}
+
+    \item \begin{minted}[escapeinside=||]{haskell}
+(||\||x -> [x])
+          \end{minted}
+
+    \begin{itemize}[label=$\square$]
+        \item \begin{minted}{haskell}
+Char -> String
+              \end{minted}
+        \item \begin{minted}{haskell}
+a -> [a]
+              \end{minted}
+        \item \begin{minted}{haskell}
+a -> a
+              \end{minted}
+        \item Kein korrekter Haskell Ausdruck
+        \item Nichts davon, sondern ....................
+    \end{itemize}
+\end{enumerate}
+
+\section*{Aufgabe 2 - Rekursion}
+Definieren sie für $n \in \mathbb{N}\setminus\{0\}$: \\[2mm]
+\begin{math}
+    \prod_{i = 1}^{i = 1} i = 1 \hspace{28mm} \text{für} \; n=1 \\[2mm]
+    \prod_{i = 1}^{i = n} i = n * \prod_{i = 1}^{i = n-1} i \hspace{10mm} \text{für} \; n\geq1 \\[2mm]
+\end{math}
+\begin{enumerate} [label={\alph*)}]
+    \setlength\itemsep{3em}
+    \item Eine rekursive Funktion wie oben beschrieben mit der folgenden Typsignatur. Sie soll für $n \leq 0$ nicht terminieren. \\
+         \begin{minted}{haskell}
+produkt :: Integral a => a -> a
+         \end{minted}
+
+    \item Erweitern sie die Funktion aus \textit{a)} sodass sie für Eingaben $n \leq 0$ eine 1 zurückgibt.
+
+    \item Schreiben sie eine Funktion die sich wie die Funktion aus \textit{b)} verhält, bloß endrekursiv.
+
+\end{enumerate}
+
+\newpage
+
+\section*{Aufgabe 3 - Auswertungsreihenfolgen}
+Umgebung soll nicht mit angegeben werden. Gegeben:
+\begin{minted}[escapeinside=||]{haskell}
+tail [1,2,3] = [2,3]
+f = tail . tail
+g = (||\||x -> 42)
+h = (||\||x -> x * x)
+\end{minted}
+
+\begin{enumerate} [label={\alph*)}]
+    \setlength\itemsep{3em}
+    \item Werten sie \texttt{g (h 3)} in applikativer Reihenfolge aus \\
+
+    \item Werten sie \texttt{g (h 3)} in normaler Reihenfolge aus \\
+
+    \item Werten sie \texttt{h (h 3)} in verzögerter Reihenfolge aus \\
+
+    \item Werten sie \texttt{f [1,2,3]} in verzögerter Reihenfolge aus \\
+\end{enumerate}
+
+\newpage
+
+\section*{Aufgabe 4 - Binärbäume}
+Gegeben:
+\begin{minted}{haskell}
+    data BB a = L | K (BB a) a (BB a)
+\end{minted}
+
+\begin{enumerate} [label={\alph*)}]
+    \item Geben sie einen \href{http://www.hs-augsburg.de/mebib/emiel/entw_inf/lernprogramme/baeume/gdi_kap_4_2.html}{ausgeglichenen} Binärbaum vom Typ
+\begin{minted}{haskell}
+    BB Integer
+\end{minted}
+    für die Werte $0-6$ (eingeschlossen) an.
+
+    \item Füllen sie die Lücken aus. Gefragt ist eine rekursive Suchfunktion für Elemente in einem Baum
+\begin{minted}[escapeinside=||]{haskell}
+suche :: Eq a => a -> BB a -> Bool
+suche .....  ......... = False
+suche .....  ......... = ..........................
+                         ..........................
+\end{minted}
+\end{enumerate}
+
+\section*{Aufgabe 5 - Faltung}
+Gegeben:
+\begin{minted}{haskell}
+data BB a = L | K (BB a) a (BB a)
+
+tief :: b -> (b -> a -> a -> a) -> BB a -> b
+tief fL fK L = fL
+tief fL fK (K linkerBaum w rechterBaum) =
+        fk (tief fL fK linkerBaum) w (tief fL fK rechterBaum)
+\end{minted}
+
+Vervollständigen sie die Definitionen:
+
+\begin{enumerate} [label={\alph*)}]
+    \item Eine Funktion die die Anzahl der Knoten in einem Binärbaum zurückgibt
+\begin{minted}[escapeinside=||]{haskell}
+anzahlKnoten :: BB a -> Int
+anzahlKnoten baum =
+    tief 0 (||\||left w right -> .......................... ) baum
+\end{minted}
+
+    \item Eine Funktion die die Tiefe eines Binärbaum zurückgibt
+        \begin{minted}[escapeinside=||]{haskell}
+baumTiefe :: BB a -> Int
+baumTiefe baum =
+    tief 0 (||\||left w right -> .......................... ) baum
+        \end{minted}
+
+    \item Eine Funktion die überprüft ob ein Element in einem Baum vorhanden ist. Ergänzen sie die Typsignatur.
+\begin{minted}[escapeinside=||]{haskell}
+istIn :: Eq a => a -> BB a -> .......................
+istIn wert baum =
+    tief False (||\||left w right -> .......................... ) baum
+\end{minted}
+
+\end{enumerate}
+
+\section*{Aufgabe 6 - Datentypen}
+Gegeben (alle Namen sind \texttt{Strings}):
+\begin{itemize}
+    \item Im Land \textit{$L_{1}$} besteht ein Personennamen aus
+        \begin{itemize}
+            \item einem oder mehreren Vornamen und
+            \item einem Nachnamen
+        \end{itemize}
+    \item Im Land \textit{$L_{2}$} besteht ein Personennamen aus
+        \begin{itemize}
+            \item einem Vornamen und
+            \item einem Mittelnamen und
+            \item einem Nachnamen
+        \end{itemize}
+\end{itemize}
+
+\begin{enumerate} [label={\alph*)}]
+    \item Definieren sie einen rekursiven Datentyp \texttt{Vornamen} für Menschen aus \textit{$L_{1}$} mit:
+        \begin{itemize}
+            \item \texttt{EV} \textit{(ein Vorname)}
+            \item \texttt{MV} \textit{(mehrere Vornamen)}
+        \end{itemize}
+
+    \item Stellen sie die Vornamen von einem Menschen ``v1'', ``v2'' und ``v3'' mithilfe von diesem Datentyp dar.
+
+    \item Definieren sie eine rekursive Funktion mit folgender Typsignatur die alle Vornamen zusammensetzt und zurückgibt.
+\begin{minted}{haskell}
+vDruck :: Vorname -> String
+\end{minted}
+
+    \item Definieren sie einen Datentyp \texttt{Name1} mit Konstruktor \texttt{N1} für Personen aus \textit{$L_{1}$}.\\[2mm]
+
+    \item Definieren sie eine Funktion mit folgender Typsignatur die einen Personennamen \texttt{Name1} als \texttt{String} in der Form \texttt{Vorname(n) Nachname} zurückgibt.
+\begin{minted}{haskell}
+druckt1 :: Name1 -> String
+\end{minted}
+
+    \item Definieren sie einen Datentyp \texttt{Name2} mit Konstruktor \texttt{N2} für Personen aus  \textit{$L_{2}$}.\\[2mm]
+
+    \item Definieren sie eine Funktion mit folgender Typsignatur die einen Personennamen \texttt{Name2} als String in der Form \texttt{Vorname Mittelname Nachname} zurückgibt.
+\begin{minted}{haskell}
+druckt2 :: Name2 -> String
+\end{minted}
+
+    \item Vervollständigen sie folgende Instanzen der Typklasse \texttt{Name}. Die Funktionen sollen analog zu \texttt{druckt1} und \texttt{druckt2} für die jeweiligen Datentypen funktionieren.
+\begin{minted}{haskell}
+class Name a where
+    
+    druckt :: a -> String
+
+instance Name Name1 where
+
+    ....................................
+    ....................................
+    ....................................
+
+instance Name Name2 where
+
+    ....................................
+    ....................................
+    ....................................
+\end{minted}
+
+\end{enumerate}
+
+\section*{Aufgabe 7}
+\begin{enumerate} [label={\alph*)}]
+
+    \item Definieren sie den Datentyp \texttt{Paar a} mit Konstruktor \texttt{P} und Typvariable \texttt{a} das ein Tupel aus Haskell simuliert. Sie dürfen den eingebauten Datentyp in Haskell jedoch \textbf{nicht} benutzen.
+
+    \item Ergänzen sie folgende Definition von der Addition von den Datentyp \texttt{Paar a}. Bei der Addition in Tupeln werden die Elemente nach dem Index addiert (\texttt{(x1,y1) + (x2,y2) = (x1+x2, y1+y2)})
+
+\begin{minted}{haskell}
+plus :: .............. => Paar a -> Paar a -> Paar a
+plus ............... ............... = P (x1 + x2) (y1 + y2)
+\end{minted}
+
+    \item Ergänzen sie die Monoidinstanz für \texttt{Pair a} sodass \texttt{a} eine Instanz in der Typklasse \texttt{Integral} besitzt und eine Monoid bezöglich der Addition ist.
+
+\begin{minted}{haskell}
+instance ............ => Monoid (Paar a) where
+    
+    mempty = ...........................
+    mappend p1 p2 = ....................
+\end{minted}
+
+\end{enumerate}
+
+\newpage
+
+\section*{Aufgabe 8}
+\begin{enumerate} [label={\alph*)}]
+    \item Vervollständigen sie die folgende Funktion \texttt{minus} die die Differenz von $n_1, n_2 \in \mathbb{Z}: n_1 - n_2$ nur dann berechnet, wenn $n_1 \geq 0, n_2 \geq 0, n_1 \geq n_2$. Wenn die nicht gilt soll der Fehlerwert von \texttt{Maybe Int} zurückgegeben werden. Das erste Argument ist $n_1$ und das zweite $n_2$.
+
+\begin{minted}{haskell}
+minus :: Maybe Int -> Maybe Int -> Maybe Int
+minus Nothing _ = .....................
+minus _ Nothing = .....................
+minus (Just n)  _ | n < 0 = .....................
+minus _  (Just n) | n < 0 = .....................
+minus (Just n1) (Just n2) | .....................
+    = Nothing
+minus (Just n1) (Just n2) | .....................
+    = ..........
+\end{minted}
+
+    \item Ist der Datentyp \texttt{Maybe Int} mit \texttt{mappend = minus} ein Monoid? Kreuzen sie an und vervollständigen sie wenn nötig.
+        \begin{itemize}[label=$\square$]
+            \item Monoid, mit Neutrum .................
+            \item ein Monoid
+        \end{itemize}
+
+\end{enumerate}
+
+\end{document}
